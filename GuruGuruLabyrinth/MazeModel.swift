@@ -8,11 +8,12 @@
 
 import Foundation
 
-// Cell 위치
+// Cell 위치 구조체
 struct Coordinate: Equatable {
     var x: Int
     var y: Int
 }
+
 // Cell 구조체
 struct Cell: Equatable {
     // 두 셀의 위치가 같으면 같은 셀로 정의함(덮어쓰기 가능하도록)
@@ -47,13 +48,6 @@ struct Cell: Equatable {
     var position: Coordinate
     var openedCell:  [Coordinate] = []
     var closedCell:  [Coordinate] = []
-    var isVisited = false
-    
-    mutating func resetCell() {
-        isVisited = false
-        closedCell += openedCell
-        openedCell = []
-    }
 }
 
 class Maze {
@@ -73,7 +67,6 @@ class Maze {
             for xindex in 0..<size {
                 remainingCells.append(Cell(position: Coordinate(x: xindex, y: yindex), mapSize: size))
                 maze.append(Cell(position: Coordinate(x: xindex, y: yindex), mapSize: size))
-                print("\(xindex), \(yindex)")
             }
         }
         print("remaining cells: \(remainingCells.count)")
@@ -93,7 +86,7 @@ class Maze {
         while true {
             let addedPath = generatePath(startingAt: startingCell)
             map += addedPath
-            mazeDraw(path: map, size: size)
+            mapDraw(path: map, size: size)
             if let randomCell = remainingCells.randomElement() {
                 startingCell = randomCell
             } else {
@@ -102,9 +95,9 @@ class Maze {
         }
         // 완성된 map으로 maze 생성(벽 제거)
         for index in 0..<map.count-2 {
-            if isAdjacent(rhs: map[index], lhs: map[index + 1]) {
+            if isAdjacent(rhs: map[index + 1], lhs: map[index]) {
                 let rightCellIndex = map[index].position.x + map[index].position.y * size
-                let leftCellIndex = map[index + 1].position.x + map[index].position.y * size
+                let leftCellIndex = map[index + 1].position.x + map[index + 1].position.y * size
                 (maze[rightCellIndex], maze[leftCellIndex]) = openWall(lastCell: map[index], newCell: map[index + 1])
                 print("Wall breaked between \(map[index].position) and \(map[index + 1].position)")
             }
@@ -123,8 +116,8 @@ class Maze {
             let lastCell = trialPath[trialPath.count - 1]
             if let newCellPosition = lastCell.closedCell.randomElement() {
                 newCell = Cell(position: newCellPosition, mapSize: size)
-                newCell.closedCell = newCell.closedCell.filter({ $0 != lastCell.position })
                 newCell.openedCell = newCell.closedCell.filter({ $0 == lastCell.position })
+                newCell.closedCell = newCell.closedCell.filter({ $0 != lastCell.position })
             }
             
             trialPath.append(newCell)
@@ -156,11 +149,13 @@ class Maze {
             if rhs.position.y == lhs.position.y {
                 return true
             }
-        } else if abs(rhs.position.y - lhs.position.y) == 1 {
+        }
+        if abs(rhs.position.y - lhs.position.y) == 1 {
             if rhs.position.x == lhs.position.x {
                 return true
             }
         }
+        print("Not Adjacent Cells")
         return false
     }
     
@@ -170,13 +165,13 @@ class Maze {
         var cell2 = newCell
         cell1.openedCell = lastCell.closedCell.filter({ $0 == newCell.position })
         cell1.closedCell = lastCell.closedCell.filter({ $0 != newCell.position })
-        cell2.openedCell = newCell.closedCell.filter({ $0 == lastCell.position })
-        cell2.closedCell = newCell.closedCell.filter({ $0 != lastCell.position })
+        cell2.openedCell = newCell.openedCell
+        cell2.closedCell = newCell.closedCell
         
         return (cell1, cell2)
     }
     
-    func mazeDraw(path: [Cell], size: Int) {
+    func mapDraw(path: [Cell], size: Int) {
         var mazeString = ""
         var mazeRow = ""
         for _ in 0..<size {
@@ -195,6 +190,10 @@ class Maze {
             mazeString.insert("#", at: replacingIndex)
         }
         print(mazeString)
+    }
+    
+    func mazeDraw() {
+        
     }
 
     

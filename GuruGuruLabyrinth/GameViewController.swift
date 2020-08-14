@@ -34,9 +34,6 @@ class GameViewController: UIViewController {
         
         let mazezz = Maze(size: 12)
         mazezz.generateMaze()
-        for index in mazezz.maze.indices {
-            print(mazezz.maze[index].openedCell)
-        }
     }
 
 }
