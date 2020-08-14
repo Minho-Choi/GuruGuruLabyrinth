@@ -139,7 +139,7 @@ class Maze {
                 }
             }
             
-            mazeDraw(path: trialPath, size: size)
+            mapDraw(path: trialPath, size: size)
         }
             
     }

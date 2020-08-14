@@ -62,10 +62,10 @@
 				B48AA19C24E524C9005DCA06 /* art.scnassets */,
 				B48AA19E24E524C9005DCA06 /* GameViewController.swift */,
 				B48AA1A024E524C9005DCA06 /* Main.storyboard */,
+				B48AA1AE24E5341D005DCA06 /* MazeModel.swift */,
 				B48AA1A324E524CB005DCA06 /* Assets.xcassets */,
 				B48AA1A524E524CB005DCA06 /* LaunchScreen.storyboard */,
 				B48AA1A824E524CB005DCA06 /* Info.plist */,
-				B48AA1AE24E5341D005DCA06 /* MazeModel.swift */,
 			);
 			path = GuruGuruLabyrinth;
 			sourceTree = "<group>";

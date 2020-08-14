@@ -7,12 +7,38 @@
 //
 
 import UIKit
-import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController {
 
-   
+    let mazeSize = 25
+    
+    lazy var maze = Maze(size: mazeSize)
+    
+    var sceneView: SCNView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        sceneSetup()
+    }
+    
+    func sceneSetup() {
+        
+        sceneView = (self.view as! SCNView)
+        
+        let scene = SCNScene()
+        let mazeSizeCGFloat = CGFloat(mazeSize)
+        
+        let planeGeometry = SCNPlane(width: mazeSizeCGFloat, height: mazeSizeCGFloat)
+        let floorNode = SCNNode(geometry: planeGeometry)
+        
+        scene.rootNode.addChildNode(floorNode)
+        
+        sceneView.scene = scene
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.allowsCameraControl = true
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }
@@ -29,11 +55,4 @@ class GameViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let mazezz = Maze(size: 12)
-        mazezz.generateMaze()
-    }
-
 }
