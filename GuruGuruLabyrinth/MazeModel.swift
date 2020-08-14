@@ -24,22 +24,22 @@ struct Cell: Equatable {
             return false
         }
     }
-    // 셀의 위치에 따라 Wall을 설정
+    // 셀의 위치에 따라 Wall을 좌표 array 형태로 생성
     init(position: Coordinate, mapSize: Int) {
         self.position = position
         self.mapSize = mapSize
         
         if position.x >= 0 && position.x < mapSize - 1{
-            self.closedCell.append(Coordinate(x: position.x + 1, y: position.y))
+            self.availableCell.append(Coordinate(x: position.x + 1, y: position.y))
         }
         if position.x <= mapSize && position.x > 0 {
-            self.closedCell.append(Coordinate(x: position.x - 1, y: position.y))
+            self.availableCell.append(Coordinate(x: position.x - 1, y: position.y))
         }
         if position.y >= 0 && position.y < mapSize - 1{
-            self.closedCell.append(Coordinate(x: position.x, y: position.y + 1))
+            self.availableCell.append(Coordinate(x: position.x, y: position.y + 1))
         }
         if position.y <= mapSize && position.y > 0 {
-            self.closedCell.append(Coordinate(x: position.x, y: position.y - 1))
+            self.availableCell.append(Coordinate(x: position.x, y: position.y - 1))
         }
     }
     
@@ -47,18 +47,23 @@ struct Cell: Equatable {
     
     var position: Coordinate
     var openedCell:  [Coordinate] = []
-    var closedCell:  [Coordinate] = []
+    var availableCell:  [Coordinate] = []
 }
 
 class Maze {
+    
     // path가 그려지지 않은 cell들(방문하지 않은 셀)
     var remainingCells = [Cell]()
+    
     // path의 모음
     var map = [Cell]()
+    
     // path를 바탕으로 계산한 실제 미로
     var maze = [Cell]()
+    
     // 미로의 크기 (size * size)
     var size: Int
+    
     // size, remainingCells, maze 초기화
     init(size: Int) {
         self.size = size
@@ -111,20 +116,30 @@ class Maze {
         
         while true {
         
-            // 상하좌우 랜덤 셀 선택
+            // 새로 만들 셀을 초기화
             var newCell = Cell(position: Coordinate(x: 0, y: 0), mapSize: size)
-            let lastCell = trialPath[trialPath.count - 1]
-            if let newCellPosition = lastCell.closedCell.randomElement() {
+            // 패스의 마지막 셀을 시작점으로 설정
+            var lastCell = trialPath[trialPath.count - 1]
+            // 패스의 마지막 셀 근처의 available한 셀을 랜덤 선택
+            if let newCellPosition = lastCell.availableCell.randomElement() {
+                // 선택된 셀을 새로운 셀로 설정함
                 newCell = Cell(position: newCellPosition, mapSize: size)
-                newCell.openedCell = newCell.closedCell.filter({ $0 == lastCell.position })
-                newCell.closedCell = newCell.closedCell.filter({ $0 != lastCell.position })
+                // 새로 만든 셀 주위 셀과의 관계 설정
+                // 새로만든 셀 - 이전 셀 사이 통로 연결
+                newCell.openedCell = newCell.availableCell.filter({ $0 == lastCell.position })
+                //lastCell.openedCell = lastCell.availableCell.filter({ $0 == newCell.position })
+                // 이미 지나온 셀은 closedcell에서 제거
+                newCell.availableCell = newCell.availableCell.filter({ $0 != lastCell.position })
+                //lastCell.availableCell = lastCell.availableCell.filter({$0 != newCell.position })
             }
-            
+            // path에 새로운 셀을 추가 및 이전 셀 수정
+            trialPath[trialPath.count-1] = lastCell
             trialPath.append(newCell)
             
-            // path가 map의 일부분에 도달했을 경우
+            // path가 map의 일부분에 도달했을 경우(map에 추가)
             if map.contains(newCell) {
                 trialPath.forEach { cell in
+                    // 아직 방문하지 않은 셀을 필터
                     remainingCells = remainingCells.filter( { $0 != cell })
                 }
                 print("remaining cells: \(remainingCells.count)")
@@ -134,16 +149,17 @@ class Maze {
             // path에 loop 만들어진 경우
             for index in 0..<trialPath.count - 2 {
                 if newCell.position == trialPath[trialPath.count - index - 2].position {
+                    // loop의 시작점부터 끝까지 지움
                     trialPath = trialPath.dropLast(index + 1)
                     break
                 }
             }
-            
+            // 현재 만들어진 path를 시각화해주는 함수
             mapDraw(path: trialPath, size: size)
         }
             
     }
-    
+    // 입력받은 두 셀이 인접한 셀인가를 판단
     func isAdjacent(rhs: Cell, lhs: Cell) -> Bool {
         if abs(rhs.position.x - lhs.position.x) == 1 {
             if rhs.position.y == lhs.position.y {
@@ -158,24 +174,24 @@ class Maze {
         print("Not Adjacent Cells")
         return false
     }
-    
+    // 입력받은 두 셀간의 Wall open 상태를 처리하여 리턴
     func openWall(lastCell: Cell, newCell: Cell) -> (Cell1: Cell, Cell2: Cell) {
         
         var cell1 = lastCell
         var cell2 = newCell
-        cell1.openedCell = lastCell.closedCell.filter({ $0 == newCell.position })
-        cell1.closedCell = lastCell.closedCell.filter({ $0 != newCell.position })
-        cell2.openedCell = newCell.openedCell
-        cell2.closedCell = newCell.closedCell
+        //cell1.openedCell = lastCell.availableCell.filter({ $0 == newCell.position })
+        cell1.availableCell = lastCell.availableCell.filter({ $0 != newCell.position })
+        //cell2.openedCell = newCell.openedCell.filter({ $0 == lastCell.position })
+        cell2.availableCell = newCell.availableCell.filter({ $0 != lastCell.position })
         
         return (cell1, cell2)
     }
-    
+    // path 시각화 함수, string 형태로 반환
     func mapDraw(path: [Cell], size: Int) {
         var mazeString = ""
         var mazeRow = ""
         for _ in 0..<size {
-            mazeRow.append(".")
+            mazeRow.append(" ")
         }
         mazeRow.append("\n")
         for _ in 0..<size {
