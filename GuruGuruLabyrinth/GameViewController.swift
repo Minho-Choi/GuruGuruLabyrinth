@@ -11,7 +11,7 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
-    let mazeSize = 4
+    let mazeSize = 12
     
     lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -68,7 +68,7 @@ class GameViewController: UIViewController {
         return ballNode
     }
     
-    func addWalls(wallData: [Cell]) -> [SCNNode] {
+    func addWalls(wallData: [Wall]) -> [SCNNode] {
         
         let wallHeight: Float = 1.0
         let wallGeometry = SCNBox(width: 0.01, height: CGFloat(wallHeight), length: 1.0, chamferRadius: 0.005)
@@ -78,31 +78,18 @@ class GameViewController: UIViewController {
         
         var wallArray = [SCNNode]()
         
-        for cell in wallData {
-            for coordinate in cell.availableCell {
-                
-                let floor = SCNNode(geometry: floorGeometry)
-                floor.position = SCNVector3(Float(coordinate.x), 0.1, Float(coordinate.y))
-                floor.rotation = SCNVector4(x: 1, y: 0, z: 0, w: Float(CGFloat.pi / 2))
-                wallArray.append(floor)
-                
-                var isWallHorizontal = false // default: 가로 방향 벽
-                let wallCenter = SCNVector3(x: Float(cell.position.x + coordinate.x) / 2, y: (wallHeight / 2), z: Float(cell.position.y + coordinate.y) / 2)
-                if cell.position.x == coordinate.x { // 위치가 세로로 인접한 셀일 경우
-                    isWallHorizontal = true
-                }
-                
-                let wallNode = SCNNode(geometry: wallGeometry)
-                wallNode.position = wallCenter
-                
-                if isWallHorizontal {
-                    wallNode.rotation = SCNVector4(0, 1, 0, CGFloat.pi / 2)
-                }
-                
-                wallArray.append(wallNode)
-                print("wall is created in \(wallCenter)")
-
+        for wall in wallData {
+            
+            let wallNode = SCNNode(geometry: wallGeometry)
+            wallNode.position = SCNVector3(x: wall.position.0, y: wallHeight/2, z: wall.position.1)
+            
+            if wall.direction == .horizontal {
+                wallNode.rotation = SCNVector4(0, 1, 0, CGFloat.pi / 2)
             }
+            if !wall.isOpened {
+                wallArray.append(wallNode)
+            }
+
         }
         return wallArray
     }
