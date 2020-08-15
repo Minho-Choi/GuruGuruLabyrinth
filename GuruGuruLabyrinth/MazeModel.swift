@@ -89,7 +89,6 @@ class Maze {
                 remainingCells.append(Cell(position: Coordinate(x: xindex, y: yindex), mapSize: size))
             }
         }
-        print("remaining cells: \(remainingCells.count)")
         
         for yindex in 0...size {
             for xindex in 0..<size {
@@ -117,7 +116,7 @@ class Maze {
         while true {
             let addedPath = generatePath(startingAt: startingCell)
             map += addedPath
-            mapDraw(path: map, size: size)
+            //mapDraw(path: map, size: size)
             if let randomCell = remainingCells.randomElement() {
                 startingCell = randomCell
             } else {
@@ -171,7 +170,6 @@ class Maze {
                     // 아직 방문하지 않은 셀을 필터
                     remainingCells = remainingCells.filter( { $0 != cell })
                 }
-                print("remaining cells: \(remainingCells.count)")
                 return trialPath
             }
             
@@ -179,13 +177,12 @@ class Maze {
             for index in 0..<trialPath.count - 2 {
                 if newCell.position == trialPath[trialPath.count - index - 2].position {
                     // loop의 시작점부터 끝까지 지움
-                    print("loop created")
                     trialPath = trialPath.dropLast(index + 1)
                     break
                 }
             }
             // 현재 만들어진 path를 시각화해주는 함수
-            mapDraw(path: trialPath, size: size)
+            //mapDraw(path: trialPath, size: size)
         }
             
     }
@@ -201,7 +198,6 @@ class Maze {
                 return true
             }
         }
-        print("Not Adjacent Cells")
         return false
     }
 
@@ -226,12 +222,6 @@ class Maze {
         }
         print(mazeString)
     }
-    
-    func mazeDraw() {
-        
-    }
-
-    
 }
 
 
