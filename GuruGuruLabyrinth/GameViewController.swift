@@ -11,7 +11,7 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
-    let mazeSize = 12
+    let mazeSize = 24
     
     lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -32,10 +32,10 @@ class GameViewController: UIViewController {
         
         let scene = SCNScene(named: "art.scnassets/MainScene.scn")!
         let ballNode = addBall()
-        //let floorNode = addFloor()
+        let floorNode = addFloor()
         let wallNodes = addWalls(wallData: wallData)
         
-        //scene.rootNode.addChildNode(floorNode)
+        scene.rootNode.addChildNode(floorNode)
         scene.rootNode.addChildNode(ballNode)
         wallNodes.forEach { scene.rootNode.addChildNode($0) }
         
@@ -44,21 +44,21 @@ class GameViewController: UIViewController {
     }
     
     func addFloor() -> SCNNode {
-        
-        let planeGeometry = SCNFloor()
-        let floorTexture = planeGeometry.firstMaterial!.diffuse
+        // Floor texture modification
+        let floorGeometry = SCNFloor()
+        let floorTexture = floorGeometry.firstMaterial!.diffuse
         floorTexture.contents = UIImage(named: "art.scnassets/FloorTexture.jpg")
         floorTexture.wrapS = .repeat
         floorTexture.wrapT = .repeat
-        floorTexture.contentsTransform = SCNMatrix4MakeScale(7, 7, 0)
-        planeGeometry.reflectivity = 0
-        let floorNode = SCNNode(geometry: planeGeometry)
+        floorTexture.contentsTransform = SCNMatrix4MakeScale(96, 96, 0)
+        floorGeometry.reflectivity = 0
+        let floorNode = SCNNode(geometry: floorGeometry)
         
         return floorNode
     }
     
     func addBall() -> SCNNode {
-        
+        // Ball texture modification
         let ballGeometry = SCNSphere(radius: 0.35)
         ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/TennisBallColorMap.jpg")
         ballGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/TennisBallBump.jpg")
@@ -71,8 +71,11 @@ class GameViewController: UIViewController {
     func addWalls(wallData: [Wall]) -> [SCNNode] {
         
         let wallHeight: Float = 1.0
-        let wallGeometry = SCNBox(width: 0.01, height: CGFloat(wallHeight), length: 1.0, chamferRadius: 0.005)
-        wallGeometry.firstMaterial!.diffuse.contents = UIColor.gray
+        let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.0, chamferRadius: 0.005)
+        wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallTexture.jpg")
+        wallGeometry.firstMaterial!.diffuse.wrapS = .repeat
+        wallGeometry.firstMaterial!.diffuse.wrapT = .repeat
+        wallGeometry.firstMaterial!.diffuse.contentsTransform = SCNMatrix4MakeScale(1, 1, 0)
         let floorGeometry = SCNPlane(width: 1, height: 1)
         floorGeometry.firstMaterial!.diffuse.contents = UIColor.black
         
