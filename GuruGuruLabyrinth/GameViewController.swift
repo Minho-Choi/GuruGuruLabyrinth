@@ -82,7 +82,7 @@ class GameViewController: UIViewController {
     
     func addBall() -> SCNNode {
         // Ball texture modification
-        let ballGeometry = SCNSphere(radius: 0.35)
+        let ballGeometry = SCNSphere(radius: 0.25)
         ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/TennisBallColorMap.jpg")
         ballGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/TennisBallBump.jpg")
         ballGeometry.segmentCount = 36
@@ -109,7 +109,7 @@ class GameViewController: UIViewController {
             
             var wallNode = SCNNode(geometry: wallGeometry)
             wallNode = setStaticPhysics(node: wallNode, shape: wallGeometry, categoryBitMask: 4, collisionBitMask: 1)
-            wallNode.position = SCNVector3(x: wall.position.0, y: wallHeight/2, z: wall.position.1)
+            wallNode.position = SCNVector3(x: wall.position.0, y: wallHeight/2 - 0.1, z: wall.position.1)
             
             if wall.direction == .horizontal {
                 wallNode.rotation = SCNVector4(0, 1, 0, CGFloat.pi / 2)
@@ -191,24 +191,48 @@ extension GameViewController: SCNSceneRendererDelegate {
         let ball = ballNode.presentation
         let ballPosition = ball.position
         
-        let targetPosition = SCNVector3(x: ballPosition.x, y: ballPosition.y + 5, z:ballPosition.z + 5)
+        let targetPosition = SCNVector3(x: ballPosition.x, y: ballPosition.y + 0.4, z:ballPosition.z) // must match with selfieStick initial position
         var cameraPosition = selfieStickNode.position
         
-        let camDamping:Float = 0.3
+        let camPoseDamping: Float = 0.3
+        let camRotDamping: Float = 0.1
         
-        let xComponent = cameraPosition.x * (1 - camDamping) + targetPosition.x * camDamping
-        let yComponent = cameraPosition.y * (1 - camDamping) + targetPosition.y * camDamping
-        let zComponent = cameraPosition.z * (1 - camDamping) + targetPosition.z * camDamping
+        let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
+        let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
+        let zComponent = cameraPosition.z * (1 - camPoseDamping) + targetPosition.z * camPoseDamping
         
         cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
         selfieStickNode.position = cameraPosition
         
         
         motion.getAccelerometerData { (x, y, z) in
-            self.motionForce = SCNVector3(x: x * 0.06, y:0, z: (y + 0.7) * -0.06)
+            self.motionForce = SCNVector3(x: x * -0.06 , y:0, z: (y + 0.7) * 0.06)
         }
         
-        ballNode.physicsBody?.velocity += motionForce
+        let quarterPI = Float.pi / 4.0
         
+        var targetDirection = SCNVector4(0, 1, 0, atan2(motionForce.x * 0.1, motionForce.z * 0.1))
+        
+        if targetDirection.w <= quarterPI && targetDirection.w > -quarterPI {
+            targetDirection.w = 0
+        } else if targetDirection.w <= quarterPI * 3 && targetDirection.w > quarterPI {
+            targetDirection.w = quarterPI * 2
+        } else if targetDirection.w <= -quarterPI && targetDirection.w > -quarterPI * 3 {
+            targetDirection.w = -quarterPI * 2
+        } else {
+            if targetDirection.w > 0 {
+                targetDirection.w = quarterPI * 4
+            } else {
+                targetDirection.w = -quarterPI * 4
+            }
+        }
+        
+        let camDirection = selfieStickNode.rotation
+        
+        let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
+        
+        selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
+        
+        ballNode.physicsBody?.velocity += motionForce
     }
 }
