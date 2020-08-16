@@ -19,6 +19,7 @@ class GameViewController: UIViewController {
     var scene: SCNScene!
     var ballNode: SCNNode!
     var selfieStickNode: SCNNode!
+    var portalNode: SCNNode!
     var floorNode: SCNNode!
     var wallNodes: [SCNNode] = []
     
@@ -51,9 +52,13 @@ class GameViewController: UIViewController {
         floorNode = addFloor()
         wallNodes = addWalls(wallData: wallData)
         selfieStickNode = scene.rootNode.childNode(withName: "selfieStick", recursively: true)!
+        portalNode = scene.rootNode.childNode(withName: "portal", recursively: true)!
+        
+        portalNode = movePortal(node: portalNode)
         
         scene.rootNode.addChildNode(floorNode)
         scene.rootNode.addChildNode(ballNode)
+        scene.rootNode.addChildNode(portalNode)
         wallNodes.forEach { scene.rootNode.addChildNode($0) }
         
     }
@@ -154,6 +159,15 @@ class GameViewController: UIViewController {
         return node
     }
     
+    func movePortal(node: SCNNode) -> SCNNode {
+        
+        let randomXPosition = CGFloat(mazeSize.arc4random)
+        let randomZPosition = CGFloat(mazeSize.arc4random)
+        
+        node.position = SCNVector3(randomXPosition, 15.0, randomZPosition)
+        return node
+    }
+    
     override var shouldAutorotate: Bool {
         return true
     }
@@ -191,7 +205,7 @@ extension GameViewController: SCNSceneRendererDelegate {
         
         
         motion.getAccelerometerData { (x, y, z) in
-            self.motionForce = SCNVector3(x: x * 0.08, y:0, z: (y + 0.7) * -0.08)
+            self.motionForce = SCNVector3(x: x * 0.06, y:0, z: (y + 0.7) * -0.06)
         }
         
         ballNode.physicsBody?.velocity += motionForce
