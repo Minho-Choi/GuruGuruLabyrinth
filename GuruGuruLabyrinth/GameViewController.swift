@@ -11,7 +11,7 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
-    let mazeSize = 24
+    let mazeSize = 8
     
     lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -26,8 +26,11 @@ class GameViewController: UIViewController {
     var motion = MotionHelper()
     var motionForce = SCNVector3(0, 0, 0)
     
+    var cameraDirection = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         sceneSetup()
         nodeSetup()
     }
@@ -42,7 +45,29 @@ class GameViewController: UIViewController {
         scene = SCNScene(named: "art.scnassets/MainScene.scn")!
         
         sceneView.scene = scene
+        
+        let swipeLeftRecognizer = UISwipeGestureRecognizer()
+        let swipeRightRecognizer = UISwipeGestureRecognizer()
+        swipeLeftRecognizer.direction = .left
+        swipeRightRecognizer.direction = .right
+        
+        swipeLeftRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
+        swipeRightRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
+        
+        sceneView.addGestureRecognizer(swipeLeftRecognizer)
+        sceneView.addGestureRecognizer(swipeRightRecognizer)
     }
+    
+    @objc func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
+        let direction = recognizer.direction
+        
+        if direction == .left {
+            cameraDirection -= 1
+        } else {
+            cameraDirection += 1
+        }
+    }
+    
     
     func nodeSetup() {
         
@@ -97,7 +122,7 @@ class GameViewController: UIViewController {
     func addWalls(wallData: [Wall]) -> [SCNNode] {
         // wall texture modification
         let wallHeight: Float = 1.0
-        let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.0, chamferRadius: 0.005)
+        let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.1, chamferRadius: 0.05)
         wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallTexture.jpg")
         wallGeometry.firstMaterial!.diffuse.wrapS = .repeat
         wallGeometry.firstMaterial!.diffuse.wrapT = .repeat
@@ -164,7 +189,8 @@ class GameViewController: UIViewController {
         let randomXPosition = CGFloat(mazeSize.arc4random)
         let randomZPosition = CGFloat(mazeSize.arc4random)
         
-        node.position = SCNVector3(randomXPosition, 15.0, randomZPosition)
+        //node.position = SCNVector3(randomXPosition, 15.0, randomZPosition)
+        node.position = SCNVector3(Float(mazeSize), 15.0, Float(mazeSize))
         return node
     }
     
@@ -206,33 +232,23 @@ extension GameViewController: SCNSceneRendererDelegate {
         
         
         motion.getAccelerometerData { (x, y, z) in
-            self.motionForce = SCNVector3(x: x * -0.06 , y:0, z: (y + 0.7) * 0.06)
+            self.motionForce = SCNVector3(x: x * -0.03 , y:0, z: (y + 0.7) * 0.03)
         }
         
         let quarterPI = Float.pi / 4.0
         
-        var targetDirection = SCNVector4(0, 1, 0, atan2(motionForce.x * 0.1, motionForce.z * 0.1))
+        var targetDirection = SCNVector4(0, 1, 0, 0)
         
-        if targetDirection.w <= quarterPI && targetDirection.w > -quarterPI {
-            targetDirection.w = 0
-        } else if targetDirection.w <= quarterPI * 3 && targetDirection.w > quarterPI {
-            targetDirection.w = quarterPI * 2
-        } else if targetDirection.w <= -quarterPI && targetDirection.w > -quarterPI * 3 {
-            targetDirection.w = -quarterPI * 2
-        } else {
-            if targetDirection.w > 0 {
-                targetDirection.w = quarterPI * 4
-            } else {
-                targetDirection.w = -quarterPI * 4
-            }
-        }
+        targetDirection.w = quarterPI * Float(cameraDirection) * 2
         
         let camDirection = selfieStickNode.rotation
         
         let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
         
+        
+        
         selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
         
-        ballNode.physicsBody?.velocity += motionForce
+        ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
     }
 }
