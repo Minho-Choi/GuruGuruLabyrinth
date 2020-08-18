@@ -28,6 +28,9 @@ class GameViewController: UIViewController {
     
     private var cameraDirection = 0
     
+    private var timer: Timer?
+    private var timePassed: Float = 0.0
+    
     var isCleared = false {
         didSet {
             showClear()
@@ -87,6 +90,9 @@ class GameViewController: UIViewController {
         sceneView.addGestureRecognizer(swipeLeftRecognizer)
         sceneView.addGestureRecognizer(swipeRightRecognizer)
         sceneView.addGestureRecognizer(swipeUpRecognizer)
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+        timer?.tolerance = 0.01
     }
     
     @objc private func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
@@ -107,7 +113,9 @@ class GameViewController: UIViewController {
         motionForce = SCNVector3(0, 1.4, 0)
     }
     
-    
+    @objc private func onTimerFires() {
+        timePassed += 0.1
+    }
     
     private func nodeSetup() {
         
@@ -206,8 +214,11 @@ class GameViewController: UIViewController {
     }
     
     func showClear() {
+        timer?.invalidate()
+        timer = nil
         DispatchQueue.main.async {
             let clearLabel = ClearView(frame: self.view.frame)
+            clearLabel.time = self.timePassed
             clearLabel.addSubview(self.view)
             self.view.addSubview(clearLabel)
             print("game clear")
