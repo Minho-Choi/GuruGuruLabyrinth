@@ -11,7 +11,7 @@ import SceneKit
 
 class GameViewController: UIViewController {
     
-    private let mazeSize = 12
+    private let mazeSize = 2
     
     private lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -28,9 +28,14 @@ class GameViewController: UIViewController {
     
     private var cameraDirection = 0
     
+    var isCleared = false {
+        didSet {
+            showClear()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         sceneSetup()
         nodeSetup()
     }
@@ -143,8 +148,8 @@ class GameViewController: UIViewController {
     private func addBall() -> SCNNode {
         // Ball texture modification
         let ballGeometry = SCNSphere(radius: 0.25)
-        ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/TennisBallColorMap.jpg")
-        ballGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/TennisBallBump.jpg")
+        ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/BasketballColor.jpg")
+        //ballGeometry.firstMaterial!.transparent.contents = UIImage(named: "art.scnassets/BeachBallTransp.jpg")
         ballGeometry.segmentCount = 36
         var ballNode = SCNNode(geometry: ballGeometry)
         ballNode.position = SCNVector3(0, 1, 0)
@@ -200,9 +205,15 @@ class GameViewController: UIViewController {
         return node
     }
     
-    private func arrived() {
-        self.view.addSubview(GameClearView)
+    func showClear() {
+        DispatchQueue.main.async {
+            let clearLabel = ClearView(frame: self.view.frame)
+            clearLabel.addSubview(self.view)
+            self.view.addSubview(clearLabel)
+            print("game clear")
+        }
     }
+    
     
     private func setDynamicPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
         
@@ -236,23 +247,12 @@ class GameViewController: UIViewController {
 
 extension GameViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
         let ball = ballNode.presentation
         let ballPosition = ball.position
         
-        let targetPosition = SCNVector3(x: ballPosition.x, y: ballPosition.y + 0.5, z:ballPosition.z)
-        // must match with selfieStick initial position in MainScene.scn
-        var cameraPosition = selfieStickNode.position
-        
         let camPoseDamping: Float = 0.3
         let camRotDamping: Float = 0.2
-        
-        let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
-        let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
-        let zComponent = cameraPosition.z * (1 - camPoseDamping) + targetPosition.z * camPoseDamping
-        
-        cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
-        selfieStickNode.position = cameraPosition
-        
         
         motion.getAccelerometerData { (x, y, z) in
             self.motionForce = SCNVector3(x: x * -0.03 , y:self.motionForce.y, z: (y + 0.7) * 0.03)
@@ -265,7 +265,22 @@ extension GameViewController: SCNSceneRendererDelegate {
         let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
         selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
         
+        let targetPosition = yRot(vector3: SCNVector3(x: 0, y: 0.5, z: -0.2), vector4: SCNVector4(0, 1, 0, -rotationAngle)) + ballPosition
+        // must match with selfieStick initial position in MainScene.scn
+        var cameraPosition = selfieStickNode.position
+        
+        let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
+        let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
+        let zComponent = cameraPosition.z * (1 - camPoseDamping) + targetPosition.z * camPoseDamping
+        
+        cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
+        selfieStickNode.position = cameraPosition
+        
         ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
         motionForce.y = 0
+        
+        if Int(round(ballPosition.x)) == mazeSize - 1 && Int(round(ballPosition.z)) == mazeSize - 1 && !isCleared{
+            isCleared.toggle()
+        }
     }
 }
