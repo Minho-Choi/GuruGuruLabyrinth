@@ -8,10 +8,11 @@
 
 import UIKit
 import SceneKit
+import CoreImage
 
 class GameViewController: UIViewController {
     
-    private let mazeSize = 2
+    private let mazeSize = 4
     
     private lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -265,33 +266,42 @@ extension GameViewController: SCNSceneRendererDelegate {
         let camPoseDamping: Float = 0.3
         let camRotDamping: Float = 0.2
         
-        motion.getAccelerometerData { (x, y, z) in
-            self.motionForce = SCNVector3(x: x * -0.03 , y:self.motionForce.y, z: (y + 0.7) * 0.03)
-        }
+        if isCleared {
+            
+            ballNode.physicsBody?.velocity = SCNVector3(0, 0.2, 0)
+            selfieStickNode.rotation = SCNVector4(1, 0, 0, 90)
+            selfieStickNode.position = ballPosition
+            
+        } else {
         
-        let quarterPI = Float.pi / 4.0
-        var targetDirection = SCNVector4(0, 1, 0, 0)
-        targetDirection.w = quarterPI * Float(cameraDirection)
-        let camDirection = selfieStickNode.rotation
-        let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
-        selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
-        
-        let targetPosition = yRot(vector3: SCNVector3(x: 0, y: 0.5, z: -0.2), vector4: SCNVector4(0, 1, 0, -rotationAngle)) + ballPosition
-        // must match with selfieStick initial position in MainScene.scn
-        var cameraPosition = selfieStickNode.position
-        
-        let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
-        let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
-        let zComponent = cameraPosition.z * (1 - camPoseDamping) + targetPosition.z * camPoseDamping
-        
-        cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
-        selfieStickNode.position = cameraPosition
-        
-        ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
-        motionForce.y = 0
-        
-        if Int(round(ballPosition.x)) == mazeSize - 1 && Int(round(ballPosition.z)) == mazeSize - 1 && !isCleared{
-            isCleared.toggle()
+            motion.getAccelerometerData { (x, y, z) in
+                self.motionForce = SCNVector3(x: x * -0.03 , y:self.motionForce.y, z: (y + 0.7) * 0.03)
+            }
+            
+            let quarterPI = Float.pi / 4.0
+            var targetDirection = SCNVector4(0, 1, 0, 0)
+            targetDirection.w = quarterPI * Float(cameraDirection)
+            let camDirection = selfieStickNode.rotation
+            let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
+            selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
+            
+            let targetPosition = yRot(vector3: SCNVector3(x: 0, y: 0.5, z: -0.2), vector4: SCNVector4(0, 1, 0, -rotationAngle)) + ballPosition
+            // must match with selfieStick initial position in MainScene.scn
+            var cameraPosition = selfieStickNode.position
+            
+            let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
+            let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
+            let zComponent = cameraPosition.z * (1 - camPoseDamping) + targetPosition.z * camPoseDamping
+            
+            cameraPosition = SCNVector3(x: xComponent, y: yComponent, z: zComponent)
+            selfieStickNode.position = cameraPosition
+            
+            ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
+            motionForce.y = 0
+            
+            if Int(round(ballPosition.x)) == mazeSize - 1 && Int(round(ballPosition.z)) == mazeSize - 1 && !isCleared{
+                isCleared.toggle()
+            }
         }
     }
 }
