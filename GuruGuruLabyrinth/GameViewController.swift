@@ -10,23 +10,23 @@ import UIKit
 import SceneKit
 
 class GameViewController: UIViewController {
-
-    let mazeSize = 8
     
-    lazy var mazeForGame = Maze(size: mazeSize)
+    private let mazeSize = 12
     
-    var sceneView: SCNView!
-    var scene: SCNScene!
-    var ballNode: SCNNode!
-    var selfieStickNode: SCNNode!
-    var portalNode: SCNNode!
-    var floorNode: SCNNode!
-    var wallNodes: [SCNNode] = []
+    private lazy var mazeForGame = Maze(size: mazeSize)
     
-    var motion = MotionHelper()
-    var motionForce = SCNVector3(0, 0, 0)
+    private var sceneView: SCNView!
+    private var scene: SCNScene!
+    private var ballNode: SCNNode!
+    private var selfieStickNode: SCNNode!
+    private var portalNode: SCNNode!
+    private var floorNode: SCNNode!
+    private var wallNodes: [SCNNode] = []
     
-    var cameraDirection = 0
+    private var motion = MotionHelper()
+    private var motionForce = SCNVector3(0, 0, 0)
+    
+    private var cameraDirection = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,23 @@ class GameViewController: UIViewController {
         nodeSetup()
     }
     
-    func sceneSetup() {
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
+        } else {
+            return .all
+        }
+    }
+    
+    private func sceneSetup() {
         
         sceneView = (self.view as! SCNView)
         sceneView.delegate = self
@@ -48,17 +64,27 @@ class GameViewController: UIViewController {
         
         let swipeLeftRecognizer = UISwipeGestureRecognizer()
         let swipeRightRecognizer = UISwipeGestureRecognizer()
+        let tapTwiceRecognizer = UITapGestureRecognizer()
+        let swipeUpRecognizer = UISwipeGestureRecognizer()
+        
+        tapTwiceRecognizer.numberOfTapsRequired = 2
         swipeLeftRecognizer.direction = .left
         swipeRightRecognizer.direction = .right
+        swipeUpRecognizer.direction = .up
         
+        
+        tapTwiceRecognizer.addTarget(self, action: #selector(sceneViewTappedTwice(recognizer:)))
         swipeLeftRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeRightRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
+        swipeUpRecognizer.addTarget(self, action: #selector(sceneViewSwipedUp(recognizer: )))
         
+        sceneView.addGestureRecognizer(tapTwiceRecognizer)
         sceneView.addGestureRecognizer(swipeLeftRecognizer)
         sceneView.addGestureRecognizer(swipeRightRecognizer)
+        sceneView.addGestureRecognizer(swipeUpRecognizer)
     }
     
-    @objc func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
+    @objc private func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
         let direction = recognizer.direction
         
         if direction == .left {
@@ -68,8 +94,17 @@ class GameViewController: UIViewController {
         }
     }
     
+    @objc private func sceneViewTappedTwice(recognizer: UITapGestureRecognizer) {
+        cameraDirection += 4
+    }
     
-    func nodeSetup() {
+    @objc private func sceneViewSwipedUp(recognizer: UISwipeGestureRecognizer) {
+        motionForce = SCNVector3(0, 1.4, 0)
+    }
+    
+    
+    
+    private func nodeSetup() {
         
         let wallData = mazeForGame.maze
         
@@ -88,7 +123,7 @@ class GameViewController: UIViewController {
         
     }
     
-    func addFloor() -> SCNNode {
+    private func addFloor() -> SCNNode {
         // Floor texture modification
         let floorGeometry = SCNFloor()
         let floorTexture = floorGeometry.firstMaterial!.diffuse
@@ -105,7 +140,7 @@ class GameViewController: UIViewController {
         return floorNode
     }
     
-    func addBall() -> SCNNode {
+    private func addBall() -> SCNNode {
         // Ball texture modification
         let ballGeometry = SCNSphere(radius: 0.25)
         ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/TennisBallColorMap.jpg")
@@ -119,9 +154,9 @@ class GameViewController: UIViewController {
         return ballNode
     }
     
-    func addWalls(wallData: [Wall]) -> [SCNNode] {
+    private func addWalls(wallData: [Wall]) -> [SCNNode] {
         // wall texture modification
-        let wallHeight: Float = 1.0
+        let wallHeight: Float = 1.2
         let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.1, chamferRadius: 0.05)
         wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallTexture.jpg")
         wallGeometry.firstMaterial!.diffuse.wrapS = .repeat
@@ -147,7 +182,7 @@ class GameViewController: UIViewController {
         return wallArray
     }
     
-    func setStaticPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
+    private func setStaticPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
         
         node.physicsBody = .static()
         node.physicsBody!.physicsShape = .init(geometry: shape)
@@ -165,7 +200,11 @@ class GameViewController: UIViewController {
         return node
     }
     
-    func setDynamicPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
+    private func arrived() {
+        self.view.addSubview(GameClearView)
+    }
+    
+    private func setDynamicPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
         
         node.physicsBody = .dynamic()
         node.physicsBody!.physicsShape = .init(geometry: shape)
@@ -180,34 +219,17 @@ class GameViewController: UIViewController {
         node.physicsBody!.charge = 0
         node.physicsBody!.isAffectedByGravity = true
         node.physicsBody!.allowsResting = true
-        
         return node
     }
     
-    func movePortal(node: SCNNode) -> SCNNode {
+    private func movePortal(node: SCNNode) -> SCNNode {
         
-        let randomXPosition = CGFloat(mazeSize.arc4random)
-        let randomZPosition = CGFloat(mazeSize.arc4random)
+        //let randomXPosition = CGFloat(mazeSize.arc4random)
+        //let randomZPosition = CGFloat(mazeSize.arc4random)
         
         //node.position = SCNVector3(randomXPosition, 15.0, randomZPosition)
-        node.position = SCNVector3(Float(mazeSize), 15.0, Float(mazeSize))
+        node.position = SCNVector3(Float(mazeSize - 1), 15.0, Float(mazeSize - 1))
         return node
-    }
-    
-    override var shouldAutorotate: Bool {
-        return true
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
     }
     
 }
@@ -217,11 +239,12 @@ extension GameViewController: SCNSceneRendererDelegate {
         let ball = ballNode.presentation
         let ballPosition = ball.position
         
-        let targetPosition = SCNVector3(x: ballPosition.x, y: ballPosition.y + 0.4, z:ballPosition.z) // must match with selfieStick initial position
+        let targetPosition = SCNVector3(x: ballPosition.x, y: ballPosition.y + 0.5, z:ballPosition.z)
+        // must match with selfieStick initial position in MainScene.scn
         var cameraPosition = selfieStickNode.position
         
         let camPoseDamping: Float = 0.3
-        let camRotDamping: Float = 0.1
+        let camRotDamping: Float = 0.2
         
         let xComponent = cameraPosition.x * (1 - camPoseDamping) + targetPosition.x * camPoseDamping
         let yComponent = cameraPosition.y * (1 - camPoseDamping) + targetPosition.y * camPoseDamping
@@ -232,23 +255,17 @@ extension GameViewController: SCNSceneRendererDelegate {
         
         
         motion.getAccelerometerData { (x, y, z) in
-            self.motionForce = SCNVector3(x: x * -0.03 , y:0, z: (y + 0.7) * 0.03)
+            self.motionForce = SCNVector3(x: x * -0.03 , y:self.motionForce.y, z: (y + 0.7) * 0.03)
         }
         
         let quarterPI = Float.pi / 4.0
-        
         var targetDirection = SCNVector4(0, 1, 0, 0)
-        
-        targetDirection.w = quarterPI * Float(cameraDirection) * 2
-        
+        targetDirection.w = quarterPI * Float(cameraDirection)
         let camDirection = selfieStickNode.rotation
-        
         let rotationAngle = camDirection.w * (1-camRotDamping) + targetDirection.w * camRotDamping
-        
-        
-        
         selfieStickNode.rotation = SCNVector4(0, 1, 0, rotationAngle)
         
         ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
+        motionForce.y = 0
     }
 }

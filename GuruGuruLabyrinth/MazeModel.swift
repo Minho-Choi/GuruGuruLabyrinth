@@ -8,11 +8,13 @@
 
 import Foundation
 
+
 // Cell 위치 구조체
 struct Coordinate: Equatable {
     var x: Int
     var y: Int
 }
+
 
 // Cell 구조체
 struct Cell: Equatable {
@@ -49,6 +51,8 @@ struct Cell: Equatable {
     var availableCell:  [Coordinate] = []
 }
 
+
+// 벽 구조체
 struct Wall {
     
     init(pos: (Float, Float), dir: direction) {
@@ -61,10 +65,14 @@ struct Wall {
     var direction: direction
 }
 
+
+// 벽 방향 enum
 enum direction {
     case horizontal
     case vertical
 }
+
+
 
 class Maze {
     
@@ -141,7 +149,7 @@ class Maze {
         }
     }
     
-    func generatePath(startingAt startingCell: Cell) -> [Cell] {
+    private func generatePath(startingAt startingCell: Cell) -> [Cell] {
         
         var trialPath = [Cell]()
         trialPath.append(startingCell)
@@ -187,7 +195,7 @@ class Maze {
             
     }
     // 입력받은 두 셀이 인접한 셀인가를 판단
-    func isAdjacent(rhs: Cell, lhs: Cell) -> Bool {
+    private func isAdjacent(rhs: Cell, lhs: Cell) -> Bool {
         if abs(rhs.position.x - lhs.position.x) == 1 {
             if rhs.position.y == lhs.position.y {
                 return true
@@ -202,7 +210,7 @@ class Maze {
     }
 
     // path 시각화 함수, string 형태로 반환
-    func mapDraw(path: [Cell], size: Int) {
+    private func mapDraw(path: [Cell], size: Int) {
         var mazeString = ""
         var mazeRow = ""
         for _ in 0..<size {
@@ -225,6 +233,7 @@ class Maze {
 }
 
 
+// 랜덤 숫자 리턴
 extension Int {
     var arc4random: Int {
         if self > 0 {
