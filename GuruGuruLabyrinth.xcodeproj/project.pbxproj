@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B42780D024ECF60C00482393 /* MainSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42780CF24ECF60C00482393 /* MainSceneViewController.swift */; };
+		B42780D424ED18A100482393 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42780D324ED18A100482393 /* LoadingView.swift */; };
 		B48AA19B24E524C9005DCA06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48AA19A24E524C9005DCA06 /* AppDelegate.swift */; };
 		B48AA19D24E524C9005DCA06 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B48AA19C24E524C9005DCA06 /* art.scnassets */; };
 		B48AA19F24E524C9005DCA06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48AA19E24E524C9005DCA06 /* GameViewController.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		B42780CF24ECF60C00482393 /* MainSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneViewController.swift; sourceTree = "<group>"; };
+		B42780D324ED18A100482393 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B48AA19724E524C9005DCA06 /* GuruGuruLabyrinth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GuruGuruLabyrinth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B48AA19A24E524C9005DCA06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B48AA19C24E524C9005DCA06 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				B4B0C7C924E802C80057890B /* VectorOperations.swift */,
 				B48AA19C24E524C9005DCA06 /* art.scnassets */,
 				B48AA19E24E524C9005DCA06 /* GameViewController.swift */,
+				B42780D324ED18A100482393 /* LoadingView.swift */,
 				B4B0C7CF24EBB4290057890B /* ClearView.swift */,
 				B48AA1A024E524C9005DCA06 /* Main.storyboard */,
 				B42780CF24ECF60C00482393 /* MainSceneViewController.swift */,
@@ -159,6 +162,7 @@
 				B48AA19F24E524C9005DCA06 /* GameViewController.swift in Sources */,
 				B48AA19B24E524C9005DCA06 /* AppDelegate.swift in Sources */,
 				B48AA1AF24E5341D005DCA06 /* MazeModel.swift in Sources */,
+				B42780D424ED18A100482393 /* LoadingView.swift in Sources */,
 				B4B0C7CA24E802C80057890B /* VectorOperations.swift in Sources */,
 				B4B0C7C824E802C00057890B /* MotionHelper.swift in Sources */,
 			);

@@ -12,6 +12,8 @@ class MainSceneViewController: UIViewController {
 
     @IBOutlet weak var pressLabel: UILabel!
     
+    var minimumClearTime: Float = 0.0
+    
     override func viewDidLoad() {
         let tapAnywhereRecoginzer = UITapGestureRecognizer()
         
@@ -27,7 +29,7 @@ class MainSceneViewController: UIViewController {
     }
     
     @objc func whenTapped(recognizer:UITapGestureRecognizer) {
-        performSegue(withIdentifier: "GameView", sender: 8)
+        performSegue(withIdentifier: "GameView", sender: 12)
     }
     
     func fadeOut() {

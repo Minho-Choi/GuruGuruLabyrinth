@@ -12,7 +12,7 @@ import CoreImage
 
 class GameViewController: UIViewController {
     
-    var optionalmazeSize: Int? = 4 {
+    var optionalmazeSize: Int? {
         didSet {
             if let mazeSizez = optionalmazeSize {
                 self.mazeSize = mazeSizez
@@ -38,7 +38,7 @@ class GameViewController: UIViewController {
     private var cameraDirection = 0
     
     private var timer: Timer?
-    private var timePassed: Float = 0.0
+    var timePassed: Float = 0.0
     
     var isCleared = false {
         didSet {
@@ -86,6 +86,7 @@ class GameViewController: UIViewController {
         let swipeRightRecognizer = UISwipeGestureRecognizer()
         let tapTwiceRecognizer = UITapGestureRecognizer()
         let swipeUpRecognizer = UISwipeGestureRecognizer()
+        let gameEndTapGestureRecognizer = UITapGestureRecognizer()
         
         tapTwiceRecognizer.numberOfTapsRequired = 2
         swipeLeftRecognizer.direction = .left
@@ -97,11 +98,13 @@ class GameViewController: UIViewController {
         swipeLeftRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeRightRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeUpRecognizer.addTarget(self, action: #selector(sceneViewSwipedUp(recognizer: )))
+        gameEndTapGestureRecognizer.addTarget(self, action: #selector(goToMain(recognizer:)))
         
         sceneView.addGestureRecognizer(tapTwiceRecognizer)
         sceneView.addGestureRecognizer(swipeLeftRecognizer)
         sceneView.addGestureRecognizer(swipeRightRecognizer)
         sceneView.addGestureRecognizer(swipeUpRecognizer)
+        sceneView.addGestureRecognizer(gameEndTapGestureRecognizer)
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         timer?.tolerance = 0.01
@@ -282,6 +285,7 @@ class GameViewController: UIViewController {
             clearLabel.addSubview(self.view)
             self.view.addSubview(clearLabel)
             print("game clear")
+            
         }
     }
     
@@ -296,6 +300,20 @@ class GameViewController: UIViewController {
         return node
     }
     
+    // MARK: - Go to main when touched
+    @objc private func goToMain(recognizer: UITapGestureRecognizer) {
+        if isCleared {
+            self.dismiss(animated: true, completion: nil)
+        }
+    
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.removeFromParent()
+    }
+
 }
 
 // MARK: - Core Motion and Camera View Control
@@ -315,9 +333,12 @@ extension GameViewController: SCNSceneRendererDelegate {
             selfieStickNode.position = ballPosition
             
         } else {
-        
-            motion.getAccelerometerData { (x, y, z) in
-                self.motionForce = SCNVector3(x: x * -0.03 , y:self.motionForce.y, z: (y + 0.7) * 0.03)
+            
+            /// Memory Cycle  발생한 부분 (weak self 선언하여 해결)
+            motion.getAccelerometerData { [weak self] (x, y, z) in
+                if let yComponent = self?.motionForce.y {
+                    self?.motionForce = SCNVector3(x: x * -0.03 , y:yComponent, z: (y + 0.7) * 0.03)
+                }
             }
             
             let quarterPI = Float.pi / 4.0
