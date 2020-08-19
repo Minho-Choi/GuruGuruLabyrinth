@@ -12,7 +12,15 @@ import CoreImage
 
 class GameViewController: UIViewController {
     
-    private let mazeSize = 4
+    var optionalmazeSize: Int? = 4 {
+        didSet {
+            if let mazeSizez = optionalmazeSize {
+                self.mazeSize = mazeSizez
+            }
+        }
+    }
+    
+    private var mazeSize = 0
     
     private lazy var mazeForGame = Maze(size: mazeSize)
     

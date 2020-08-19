@@ -179,7 +179,6 @@ class Maze {
                 trialPath.forEach { cell in
                     // 아직 방문하지 않은 셀을 필터
                     passedCells += remainingCells.filter({ $0 == cell })
-                    print(passedCells.count)
                     remainingCells = remainingCells.filter( { $0 != cell })
                 }
                 return trialPath
