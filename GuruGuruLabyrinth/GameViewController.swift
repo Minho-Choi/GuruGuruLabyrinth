@@ -46,11 +46,16 @@ class GameViewController: UIViewController {
     }
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadingFinished(_:)), name: .loadingEnded, object: nil)
         sceneSetup()
         nodeSetup()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Completing.."])
     }
     
     // MARK: - Device Control
@@ -317,6 +322,17 @@ class GameViewController: UIViewController {
         
         self.removeFromParent()
     }
+    // MARK: - For checking the noti center works or not
+    @objc func loadingFinished (_ notification: Notification) {
+        if let data = notification.userInfo as? [String: String]
+        {
+            for (name, score) in data
+            {
+                print("\(name): \(score) ")
+            }
+        }
+    }
+
 
 }
 
@@ -371,4 +387,8 @@ extension GameViewController: SCNSceneRendererDelegate {
             }
         }
     }
+}
+
+extension Notification.Name {
+    static let loadingEnded = Notification.Name("loadingEnded")
 }

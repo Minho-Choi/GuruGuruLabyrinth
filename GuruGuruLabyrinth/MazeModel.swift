@@ -94,6 +94,8 @@ class Maze {
     init(size: Int) {
         self.size = size
         
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.2", "status" : "Initializing.."])
+        
         for yindex in 0..<size {
             for xindex in 0..<size {
                 remainingCells.append(Cell(position: Coordinate(x: xindex, y: yindex), mapSize: size))
@@ -117,6 +119,8 @@ class Maze {
     // Reference: https://en.wikipedia.org/wiki/Maze_generation_algorithm
     
     func generateMaze() {
+        
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.7", "status" : "Generating Maze.."])
         // 양 끝 셀을 입구, 출구로 설정
         var startingCell = Cell(position: Coordinate(x: 0, y: 0), mapSize: size)
         let finishingCell = Cell(position: Coordinate(x: size - 1, y: size - 1), mapSize: size)
