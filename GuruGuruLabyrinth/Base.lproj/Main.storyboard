@@ -31,11 +31,20 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ac5-WL-V2X">
+                                <rect key="frame" x="-143" y="734" width="700" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="700" id="0sp-xb-fgh"/>
+                                    <constraint firstAttribute="width" secondItem="Ac5-WL-V2X" secondAttribute="height" multiplier="175:32" id="a5e-gA-bT0"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="e3L-7m-qwS" firstAttribute="bottom" secondItem="Ac5-WL-V2X" secondAttribute="bottom" id="6Fv-21-iQC"/>
                             <constraint firstItem="aRA-uy-yN8" firstAttribute="top" secondItem="LJb-x3-7kL" secondAttribute="bottom" constant="80" id="TMR-n7-gkl"/>
+                            <constraint firstItem="Ac5-WL-V2X" firstAttribute="centerX" secondItem="Dur-gB-ZPF" secondAttribute="centerX" id="ddg-lQ-rIX"/>
                             <constraint firstItem="LJb-x3-7kL" firstAttribute="centerX" secondItem="e3L-7m-qwS" secondAttribute="centerX" id="eUz-to-ZOR"/>
                             <constraint firstItem="LJb-x3-7kL" firstAttribute="top" secondItem="e3L-7m-qwS" secondAttribute="top" constant="140" id="v2O-Ez-cCS"/>
                             <constraint firstItem="aRA-uy-yN8" firstAttribute="centerX" secondItem="Dur-gB-ZPF" secondAttribute="centerX" id="xcF-nz-GvP"/>
@@ -67,4 +76,7 @@
             <point key="canvasLocation" x="139" y="98"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo" width="987" height="599"/>
+    </resources>
 </document>
