@@ -79,6 +79,8 @@ class Maze {
     // path가 그려지지 않은 cell들(방문하지 않은 셀)
     var remainingCells = [Cell]()
     
+    var passedCells = [Cell]()
+    
     // path의 모음
     var map = [Cell]()
     
@@ -176,6 +178,8 @@ class Maze {
             if map.contains(newCell) {
                 trialPath.forEach { cell in
                     // 아직 방문하지 않은 셀을 필터
+                    passedCells += remainingCells.filter({ $0 == cell })
+                    print(passedCells.count)
                     remainingCells = remainingCells.filter( { $0 != cell })
                 }
                 return trialPath

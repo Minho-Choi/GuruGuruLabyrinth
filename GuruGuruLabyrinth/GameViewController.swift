@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
     private var ballNode: SCNNode!
     private var selfieStickNode: SCNNode!
     private var portalNode: SCNNode!
-    private var floorNode: SCNNode!
+    private var floorNodes: [SCNNode] = []
     private var wallNodes: [SCNNode] = []
     
     private var motion = MotionHelper()
@@ -38,12 +38,15 @@ class GameViewController: UIViewController {
         }
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneSetup()
         nodeSetup()
     }
     
+    // MARK: - Device Control
     override var shouldAutorotate: Bool {
         return false
     }
@@ -59,7 +62,7 @@ class GameViewController: UIViewController {
             return .all
         }
     }
-    
+    // MARK: - Setting Up the Scene
     private func sceneSetup() {
         
         sceneView = (self.view as! SCNView)
@@ -94,8 +97,12 @@ class GameViewController: UIViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         timer?.tolerance = 0.01
+        
+        //sceneView.allowsCameraControl = true
     }
     
+    
+    // MARK: - Gesture and Timer Control
     @objc private func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
         let direction = recognizer.direction
         
@@ -118,47 +125,64 @@ class GameViewController: UIViewController {
         timePassed += 0.1
     }
     
+    // MARK: - Setting Up the Nodes
     private func nodeSetup() {
         
         let wallData = mazeForGame.maze
+        let cellData = mazeForGame.passedCells
         
         ballNode = addBall()
-        floorNode = addFloor()
+        floorNodes = addFloors(cellData: cellData)
         wallNodes = addWalls(wallData: wallData)
         selfieStickNode = scene.rootNode.childNode(withName: "selfieStick", recursively: true)!
         portalNode = scene.rootNode.childNode(withName: "portal", recursively: true)!
         
         portalNode = movePortal(node: portalNode)
         
-        scene.rootNode.addChildNode(floorNode)
         scene.rootNode.addChildNode(ballNode)
         scene.rootNode.addChildNode(portalNode)
         wallNodes.forEach { scene.rootNode.addChildNode($0) }
+        floorNodes.forEach { scene.rootNode.addChildNode($0) }
         
     }
     
-    private func addFloor() -> SCNNode {
+    private func addFloors(cellData: [Cell]) -> [SCNNode] {
         // Floor texture modification
-        let floorGeometry = SCNFloor()
+        let floorGeometry = SCNPlane(width: CGFloat(mazeSize + 1), height: CGFloat(mazeSize + 1))
         let floorTexture = floorGeometry.firstMaterial!.diffuse
-        floorTexture.contents = UIImage(named: "art.scnassets/FloorTexture.jpg")
-        floorTexture.wrapS = .repeat
-        floorTexture.wrapT = .repeat
-        floorTexture.contentsTransform = SCNMatrix4MakeScale(96, 96, 0)
-        floorGeometry.reflectivity = 0
-        var floorNode = SCNNode(geometry: floorGeometry)
+        floorTexture.contents = UIImage(named: "art.scnassets/FloorDiffuse.tif")
+        //floorTexture.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+        floorGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/FloorNormal.tif")
+        //floorGeometry.firstMaterial!.normal.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+        floorGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/FloorOcclusion.tif")
+        //floorGeometry.firstMaterial!.ambientOcclusion.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+        floorGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/FloorRoughness.tif")
+        //floorGeometry.firstMaterial!.roughness.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+        floorGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/FloorHeight.tif")
+        //floorGeometry.firstMaterial!.displacement.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+        floorGeometry.firstMaterial!.displacement.intensity = 0.1
         
-        // floor physics modification
-        floorNode = setStaticPhysics(node: floorNode, shape: floorGeometry, categoryBitMask: 2, collisionBitMask: 1)
+        var floorArray = [SCNNode]()
         
-        return floorNode
+        for cell in cellData {
+            var floorNode = SCNNode(geometry: floorGeometry)
+            
+            // floor physics modification
+            floorNode = setStaticPhysics(node: floorNode, shape: floorGeometry, categoryBitMask: 2, collisionBitMask: 1)
+            floorNode.rotation = SCNVector4(1, 0, 0, CGFloat.pi/2)
+            floorNode.position = SCNVector3(CGFloat(cell.position.x), 0.1, CGFloat(cell.position.y))
+            floorArray.append(floorNode)
+        }
+        return floorArray
     }
     
     private func addBall() -> SCNNode {
         // Ball texture modification
         let ballGeometry = SCNSphere(radius: 0.25)
-        ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/BasketballColor.jpg")
-        //ballGeometry.firstMaterial!.transparent.contents = UIImage(named: "art.scnassets/BeachBallTransp.jpg")
+        ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/BallDiffuse.tif")
+        ballGeometry.firstMaterial!.metalness.contents = UIImage(named: "art.scnassets/BallMetallic.tif")
+        ballGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/BallNormal.tif")
+        ballGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/BallRoughness.tif")
         ballGeometry.segmentCount = 36
         var ballNode = SCNNode(geometry: ballGeometry)
         ballNode.position = SCNVector3(0, 1, 0)
@@ -171,11 +195,16 @@ class GameViewController: UIViewController {
     private func addWalls(wallData: [Wall]) -> [SCNNode] {
         // wall texture modification
         let wallHeight: Float = 1.2
-        let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.1, chamferRadius: 0.05)
-        wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallTexture.jpg")
+        let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.1, chamferRadius: 0.01)
+        wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallDiffuse.tif")
         wallGeometry.firstMaterial!.diffuse.wrapS = .repeat
         wallGeometry.firstMaterial!.diffuse.wrapT = .repeat
-        wallGeometry.firstMaterial!.diffuse.contentsTransform = SCNMatrix4MakeScale(1, 1, 0)
+        //wallGeometry.firstMaterial!.diffuse.contentsTransform = SCNMatrix4MakeScale(1, 1, 0)
+        wallGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/WallNormal.tif")
+        wallGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/WallOcclusion.tif")
+        wallGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/WallRoughness.tif")
+        wallGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/WallHeight.tif")
+        wallGeometry.firstMaterial!.displacement.intensity = 0.01
         
         var wallArray = [SCNNode]()
         // add wall nodes to array
@@ -196,6 +225,7 @@ class GameViewController: UIViewController {
         return wallArray
     }
     
+    // MARK: - Physics
     private func setStaticPhysics(node: SCNNode, shape: SCNGeometry, categoryBitMask: Int, collisionBitMask: Int) -> SCNNode {
         
         node.physicsBody = .static()
@@ -212,18 +242,6 @@ class GameViewController: UIViewController {
         node.physicsBody!.allowsResting = true
         
         return node
-    }
-    
-    func showClear() {
-        timer?.invalidate()
-        timer = nil
-        DispatchQueue.main.async {
-            let clearLabel = ClearView(frame: self.view.frame)
-            clearLabel.time = self.timePassed
-            clearLabel.addSubview(self.view)
-            self.view.addSubview(clearLabel)
-            print("game clear")
-        }
     }
     
     
@@ -245,6 +263,21 @@ class GameViewController: UIViewController {
         return node
     }
     
+    
+    // MARK: - Game Clear Function
+    func showClear() {
+        timer?.invalidate()
+        timer = nil
+        DispatchQueue.main.async {
+            let clearLabel = ClearView(frame: self.view.frame)
+            clearLabel.time = self.timePassed
+            clearLabel.addSubview(self.view)
+            self.view.addSubview(clearLabel)
+            print("game clear")
+        }
+    }
+    
+    // MARK: - Move Portal to End of the Maze
     private func movePortal(node: SCNNode) -> SCNNode {
         
         //let randomXPosition = CGFloat(mazeSize.arc4random)
@@ -257,6 +290,7 @@ class GameViewController: UIViewController {
     
 }
 
+// MARK: - Core Motion and Camera View Control
 extension GameViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         
