@@ -45,17 +45,23 @@ class GameViewController: UIViewController {
         }
     }
     
+    private var loadingView = LoadingView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(loadingFinished(_:)), name: .loadingEnded, object: nil)
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.2", "status" : "Initializing..."])
+        showLoadingBar()
         sceneSetup()
         nodeSetup()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Completing.."])
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Completing..."])
+        DispatchQueue.main.async {
+            self.loadingView.remove()
+        }
     }
     
     // MARK: - Device Control
@@ -79,7 +85,7 @@ class GameViewController: UIViewController {
         
         sceneView = (self.view as! SCNView)
         sceneView.delegate = self
-        
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.6", "status" : "Generating Maze..."])
         mazeForGame.generateMaze()
         
         scene = SCNScene(named: "art.scnassets/MainScene.scn")!
@@ -322,17 +328,24 @@ class GameViewController: UIViewController {
         
         self.removeFromParent()
     }
-    // MARK: - For checking the noti center works or not
+    
+    // MARK: - Loading Bar Appearance
     @objc func loadingFinished (_ notification: Notification) {
+        print("progress written")
         if let data = notification.userInfo as? [String: String]
         {
-            for (name, score) in data
-            {
-                print("\(name): \(score) ")
+            DispatchQueue.main.async {
+                self.loadingView.setLoadingStatus(description: data["status"]!, percent: data["percentage"]!)
             }
         }
     }
-
+    
+    
+    func showLoadingBar() {
+        DispatchQueue.main.async {
+            self.loadingView.addSubview(self.view)
+        }
+    }
 
 }
 
