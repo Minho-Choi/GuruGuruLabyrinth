@@ -8,7 +8,6 @@
 
 import UIKit
 import SceneKit
-import CoreImage
 
 class GameViewController: UIViewController {
     
@@ -114,6 +113,8 @@ class GameViewController: UIViewController {
     
     
     // MARK: - Gesture and Timer Control
+    
+    // swipe left, right for moving the point of view
     @objc private func sceneViewSwiped(recognizer: UISwipeGestureRecognizer) {
         let direction = recognizer.direction
         
@@ -124,14 +125,17 @@ class GameViewController: UIViewController {
         }
     }
     
+    // tap twice for watching back
     @objc private func sceneViewTappedTwice(recognizer: UITapGestureRecognizer) {
         cameraDirection += 4
     }
     
+    // swipe up for jump
     @objc private func sceneViewSwipedUp(recognizer: UISwipeGestureRecognizer) {
         motionForce = SCNVector3(0, 1.4, 0)
     }
     
+    // 0.1 second timer
     @objc private func onTimerFires() {
         timePassed += 0.1
     }

@@ -15,6 +15,8 @@ class MainSceneViewController: UIViewController {
     var minimumClearTime: Float = 0.0
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         let tapAnywhereRecoginzer = UITapGestureRecognizer()
         
         tapAnywhereRecoginzer.addTarget(self, action: #selector(whenTapped(recognizer:)))
@@ -35,8 +37,8 @@ class MainSceneViewController: UIViewController {
     func fadeOut() {
         UIViewPropertyAnimator.runningPropertyAnimator(
         withDuration: 1.0,
-        delay: 0.0,
-        options: [.curveEaseInOut,.allowUserInteraction],
+        delay: 0.5,
+        options: [.allowUserInteraction],
         animations: { self.pressLabel.alpha = 0.0 },
         completion: { if $0 == .end { self.fadeIn() }} )
     }
@@ -45,7 +47,7 @@ class MainSceneViewController: UIViewController {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 1.0,
             delay: 0.0,
-            options: [.curveEaseInOut,.allowUserInteraction],
+            options: [.allowUserInteraction],
             animations: { self.pressLabel.alpha = 1.0 },
             completion: {if $0 == .end { self.fadeOut() }} )
     }
@@ -57,6 +59,9 @@ class MainSceneViewController: UIViewController {
             gameViewController.optionalmazeSize = sender as? Int
         }
     }
-        
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
 }

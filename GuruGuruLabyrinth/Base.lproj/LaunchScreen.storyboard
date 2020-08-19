@@ -15,30 +15,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrgh Studio Presents" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPc-2N-N6n">
-                                <rect key="frame" x="57" y="294" width="300" height="120"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Presents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPc-2N-N6n">
+                                <rect key="frame" x="158.33333333333334" y="540.66666666666663" width="97.666666666666657" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="a7T-r8-r3x"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="gmF-3j-fov"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="a7T-r8-r3x"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="21"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_noname" translatesAutoresizingMaskIntoConstraints="NO" id="TU5-Vh-cLO">
-                                <rect key="frame" x="117" y="205.33333333333334" width="180" height="80.666666666666657"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="TU5-Vh-cLO">
+                                <rect key="frame" x="0.0" y="355.33333333333331" width="414" height="185.33333333333331"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="TU5-Vh-cLO" secondAttribute="height" multiplier="143:64" id="Oqa-yK-aZt"/>
-                                    <constraint firstAttribute="width" constant="180" id="WHD-pg-27d"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="leading" secondItem="TU5-Vh-cLO" secondAttribute="leading" id="2oe-TG-FxO"/>
                             <constraint firstItem="TU5-Vh-cLO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="HX8-SC-tIw"/>
+                            <constraint firstItem="TU5-Vh-cLO" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Uks-uc-gEt"/>
+                            <constraint firstItem="TU5-Vh-cLO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ckj-pP-s7I"/>
                             <constraint firstItem="RPc-2N-N6n" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fF8-MA-h40"/>
-                            <constraint firstItem="RPc-2N-N6n" firstAttribute="top" secondItem="TU5-Vh-cLO" secondAttribute="bottom" constant="8" id="g4I-yO-Qcp"/>
-                            <constraint firstItem="RPc-2N-N6n" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="250" id="ww9-Or-UyY"/>
+                            <constraint firstItem="RPc-2N-N6n" firstAttribute="top" secondItem="TU5-Vh-cLO" secondAttribute="bottom" id="g4I-yO-Qcp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -49,6 +49,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo_noname" width="366" height="153"/>
+        <image name="logo" width="987" height="599"/>
     </resources>
 </document>
