@@ -24,6 +24,8 @@ Ball-rolling maze game based on Swift SceneKit
 ## 향후 구현해야 할 것들
 
 > ### - 조작 방식 변경(버튼이나 탭 제스처)
+> ### - 로딩 바 Delegation으로 구현해보기
+> ### - SceneKit 위에 SpriteKit overlay, 시간 및 버튼 표시
 > ### - 공, 바닥, 벽 텍스쳐 선택 기능
 > ### - 공 종류에 따른 physics 변경
 > ### - 시점 변경 기능(1인칭/3인칭)
