@@ -8,6 +8,7 @@
 
 import UIKit
 import SceneKit
+import SpriteKit
 
 class GameViewController: UIViewController {
     
@@ -23,8 +24,10 @@ class GameViewController: UIViewController {
     
     private lazy var mazeForGame = Maze(size: mazeSize)
     
-    private var sceneView: SCNView!
+    internal var sceneView: SCNView!
     private var scene: SCNScene!
+    
+    
     private var ballNode: SCNNode!
     private var selfieStickNode: SCNNode!
     private var portalNode: SCNNode!
@@ -120,6 +123,12 @@ class GameViewController: UIViewController {
         timer?.tolerance = 0.01
         
         //sceneView.allowsCameraControl = true
+        let spriteScene = SKScene(size: sceneView.frame.size)
+        spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
+        spriteScene.addChild(SKShapeNode(rect: CGRect(x: 10, y: 10, width: 10, height: 10)))
+
+        sceneView.overlaySKScene = spriteScene
+        
     }
     
     

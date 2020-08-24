@@ -31,7 +31,7 @@ class MainSceneViewController: UIViewController {
     }
     
     @objc func whenTapped(recognizer:UITapGestureRecognizer) {
-        performSegue(withIdentifier: "GameView", sender: 24)
+        performSegue(withIdentifier: "GameView", sender: 12)
     }
     
     func fadeOut() {
