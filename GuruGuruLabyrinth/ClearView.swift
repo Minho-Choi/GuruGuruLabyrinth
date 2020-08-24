@@ -19,15 +19,16 @@ class ClearView: UIView {
     */
     
     var time = Float()
+    var customFrame = CGRect()
+    var customRadius = CGFloat()
     
     override func addSubview(_ view: UIView) {
         let clearLabel = UILabel()
         
-        let width = view.frame.width - 20
         let roundedTime = round(time * 10)/10
     
-        clearLabel.frame = CGRect(x: view.frame.midX - width / 2, y: view.frame.midY - 100, width: width, height: 200)
-        clearLabel.layer.cornerRadius = 10
+        clearLabel.frame = CGRect(x: customFrame.minX, y: customFrame.minY, width: customFrame.width, height: customFrame.height)
+        clearLabel.layer.cornerRadius = customRadius
         clearLabel.numberOfLines = 2
         let attribute: [NSAttributedString.Key : Any] = [.font : UIFont(name: "Chalkduster", size: 36.0) as Any, .foregroundColor : UIColor.white]
         clearLabel.attributedText = NSAttributedString(string: "Maze Clear!\n\(roundedTime) sec", attributes: attribute)

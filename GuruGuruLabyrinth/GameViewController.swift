@@ -123,9 +123,16 @@ class GameViewController: UIViewController {
         timer?.tolerance = 0.01
         
         //sceneView.allowsCameraControl = true
+        
+        let button = SKShapeNode(rect: CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength), cornerRadius: buttonRadius)
+        
+        button.fillColor = .lightGray
+        button.strokeColor = .darkGray
+        button.lineWidth = buttonStrokeThickness
+        
         let spriteScene = SKScene(size: sceneView.frame.size)
         spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
-        spriteScene.addChild(SKShapeNode(rect: CGRect(x: 10, y: 10, width: 10, height: 10)))
+        spriteScene.addChild(button)
 
         sceneView.overlaySKScene = spriteScene
         
@@ -304,8 +311,10 @@ class GameViewController: UIViewController {
         timer?.invalidate()
         timer = nil
         DispatchQueue.main.async {
-            let clearLabel = ClearView(frame: self.view.frame)
+            let clearLabel = ClearView(frame: self.sceneView.frame)
             clearLabel.time = self.timePassed
+            clearLabel.customFrame = CGRect(x: self.popUpPosition.x, y: self.popUpPosition.y, width: self.popUpWidth, height: self.popUpHeight)
+            clearLabel.customRadius = self.popUpRadius
             clearLabel.addSubview(self.view)
             self.view.addSubview(clearLabel)
             print("game clear")
@@ -379,7 +388,7 @@ extension GameViewController: SCNSceneRendererDelegate {
             /// Memory Cycle  발생한 부분 (weak self 선언하여 해결)
             motion.getAccelerometerData { [weak self] (x, y, z) in
                 if let yComponent = self?.motionForce.y {
-                    self?.motionForce = SCNVector3(x: x * -0.03 , y:yComponent, z: (y + 0.7) * 0.03)
+                    self?.motionForce = SCNVector3(x: x * -0.03, y:yComponent, z: (y + 0.7) * 0.03)
                 }
             }
             
