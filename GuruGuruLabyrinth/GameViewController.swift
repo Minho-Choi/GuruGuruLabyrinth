@@ -80,7 +80,7 @@ class GameViewController: UIViewController {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown
         } else {
-            return .all
+            return .allButUpsideDown
         }
     }
     // MARK: - Setting Up the Scene

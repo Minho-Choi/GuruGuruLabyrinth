@@ -20,31 +20,53 @@ extension GameViewController {
         static let popUpHeightToBoundsHeightPad: CGFloat = 0.7
         static let popUpRadiusToBoundsWidth: CGFloat = 0.05
         static let popUpStrokeThicknessToBoundsWidthRatio: CGFloat = 0.04
-        static let buttonLengthToBoundsWidthPhone: CGFloat = 0.1
-        static let buttonLengthToBoundsWidthPad: CGFloat = 0.15
-        static let buttonRadiusToBoundsWidth: CGFloat = 0.02
-        static let buttonStrokeThicknessToBoundsWidthRatio: CGFloat = 0.01
         
-        //static let cornerOffsetToCornerRadius: CGFloat = 0.33
+        static let buttonLengthToBoundsWidthPhone: CGFloat = 0.1
+        static let buttonLengthToBoundsWidthPad: CGFloat = 0.08
+        static let buttonRadiusToButtonLength: CGFloat = 0.2
+        static let buttonStrokeThicknessToButtonLength: CGFloat = 0.1
+        
+        static let timerWidthToBoundsWidthPhone: CGFloat = 0.2
+        static let timerAspectRatio: CGFloat = 0.5
     }
     internal var buttonRadius: CGFloat {
-        return sceneView.frame.width * SizeRatio.buttonRadiusToBoundsWidth
+        return SizeRatio.buttonRadiusToButtonLength * self.buttonLength
     }
     
     internal var buttonLength: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPhone
+            if UIDevice.current.orientation == .portrait { // phone, portrait
+                return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPhone
+            } else { // phone, landscape
+                return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPhone
+            }
         } else {
-            return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPad
+            if UIDevice.current.orientation == .portrait { // pad, portrait
+                return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPad
+            } else { // pad, landscape
+                return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPad
+            }
         }
     }
     
     internal var buttonPosition: CGPoint {
-        return CGPoint(x: sceneView.frame.width * 0.85, y: sceneView.frame.height * 0.92)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            if UIDevice.current.orientation == .portrait {
+                return CGPoint(x: sceneView.frame.width * 0.86, y: sceneView.frame.height * 0.92)
+            } else {
+                return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.86)
+            }
+        } else {
+            if UIDevice.current.orientation == .portrait {
+                return CGPoint(x: sceneView.frame.width * 0.90, y: sceneView.frame.height * 0.92)
+            } else {
+                return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.90)
+            }
+        }
     }
     
     internal var buttonStrokeThickness: CGFloat {
-        return sceneView.frame.width * SizeRatio.buttonStrokeThicknessToBoundsWidthRatio
+        return SizeRatio.buttonStrokeThicknessToButtonLength * self.buttonLength
     }
     
     internal var popUpWidth: CGFloat {
