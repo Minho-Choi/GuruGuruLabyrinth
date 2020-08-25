@@ -124,16 +124,12 @@ class GameViewController: UIViewController {
         
         //sceneView.allowsCameraControl = true
         
-        let button = SKShapeNode(rect: CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength), cornerRadius: buttonRadius)
-        
-        button.fillColor = .lightGray
-        button.strokeColor = .darkGray
-        button.lineWidth = buttonStrokeThickness
-        
-        let spriteScene = SKScene(size: sceneView.frame.size)
+        let spriteScene = OverlayScene(size: sceneView.frame.size)
         spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
-        spriteScene.addChild(button)
-
+        spriteScene.buttonFrame = CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength)
+        spriteScene.buttonStrokeT = buttonStrokeThickness
+        spriteScene.buttonCR = buttonRadius
+        spriteScene.makeButton()
         sceneView.overlaySKScene = spriteScene
         
     }
