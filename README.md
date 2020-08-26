@@ -4,6 +4,14 @@ Guru Guru Labyrinth(가제: 데굴데굴 미로탈출)
 Ball-rolling maze game based on Swift SceneKit
 ----------------------------------------------
 
+### 선택과 집중!
+> - Core motion 이용한 조작 기능은 제거, 차기작에 반영하도록 하자
+> - 모든 조작은 버튼으로
+> - 화면 내 요소들 레이아웃에 신경쓰기
+> - 화면 방향 고정(가로)
+> - 시점 변경 기능 역시 불필요한 기능으로 판단, 삭제
+
+
 ## 현재 진행상황
 
 > ### - n by n 미로생성 알고리즘 구현 완료(Wilson's algorithm)
@@ -28,7 +36,6 @@ Ball-rolling maze game based on Swift SceneKit
 > ### - SceneKit 위에 SpriteKit overlay, 시간 및 버튼 표시
 > ### - 공, 바닥, 벽 텍스쳐 선택 기능
 > ### - 공 종류에 따른 physics 변경
-> ### - 시점 변경 기능(1인칭/3인칭)
 > ### - 레벨 선택 기능
 > ### - 알고리즘 수정(m by n 역시 가능하도록)
 > ### - 몬스터
