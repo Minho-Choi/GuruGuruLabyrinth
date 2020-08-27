@@ -35,33 +35,17 @@ extension GameViewController {
     
     internal var buttonLength: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            if UIDevice.current.orientation == .portrait { // phone, portrait
-                return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPhone
-            } else { // phone, landscape
-                return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPhone
-            }
+            return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPhone
         } else {
-            if UIDevice.current.orientation == .portrait { // pad, portrait
-                return sceneView.frame.width * SizeRatio.buttonLengthToBoundsWidthPad
-            } else { // pad, landscape
-                return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPad
-            }
+            return sceneView.frame.height * SizeRatio.buttonLengthToBoundsWidthPad
         }
     }
     
     internal var buttonPosition: CGPoint {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            if UIDevice.current.orientation == .portrait {
-                return CGPoint(x: sceneView.frame.width * 0.86, y: sceneView.frame.height * 0.92)
-            } else {
-                return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.86)
-            }
+            return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.86)
         } else {
-            if UIDevice.current.orientation == .portrait {
-                return CGPoint(x: sceneView.frame.width * 0.90, y: sceneView.frame.height * 0.92)
-            } else {
-                return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.90)
-            }
+            return CGPoint(x: sceneView.frame.width * 0.92, y: sceneView.frame.height * 0.90)
         }
     }
     

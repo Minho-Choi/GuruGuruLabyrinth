@@ -56,6 +56,7 @@ class GameViewController: UIViewController {
         NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.2", "status" : "Initializing..."])
         showLoadingBar()
         sceneSetup()
+        overlaySetup(size: view.frame.size)
         nodeSetup()
     }
     
@@ -67,9 +68,13 @@ class GameViewController: UIViewController {
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        overlaySetup(size: size)
+    }
+    
     // MARK: - Device Control
     override var shouldAutorotate: Bool {
-        return false
+        return true
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -78,9 +83,9 @@ class GameViewController: UIViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .landscape
         } else {
-            return .allButUpsideDown
+            return .landscape
         }
     }
     // MARK: - Setting Up the Scene
@@ -124,7 +129,13 @@ class GameViewController: UIViewController {
         
         //sceneView.allowsCameraControl = true
         
-        let spriteScene = OverlayScene(size: sceneView.frame.size)
+        
+        
+    }
+    
+    private func overlaySetup(size: CGSize) {
+        
+        let spriteScene = OverlayScene(size: size)
         spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
         spriteScene.buttonFrame = CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength)
         spriteScene.buttonStrokeT = buttonStrokeThickness
@@ -314,7 +325,9 @@ class GameViewController: UIViewController {
             clearLabel.addSubview(self.view)
             self.view.addSubview(clearLabel)
             print("game clear")
-            
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
+            self.sceneView.scene?.isPaused = true
         }
     }
     
