@@ -42,10 +42,7 @@ class SelectLevelViewController: UIViewController, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let newlevelCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LevelCell", for: indexPath)
         if let level = newlevelCell as? LevelSelectCollectionViewCell {
-            level.levelName = levelArray[indexPath.item].levelName
-            level.fogDistance = levelArray[indexPath.item].fogDistance
-            level.mazeSize = levelArray[indexPath.item].mazeSize
-            level.skyType = levelArray[indexPath.item].skyType
+            level.levelData = levelArray[indexPath.item]
         }
         return newlevelCell
     }

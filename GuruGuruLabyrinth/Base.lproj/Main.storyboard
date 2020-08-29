@@ -127,8 +127,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level Select" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jeM-6l-QBH">
+                                <rect key="frame" x="299.33333333333331" y="19.999999999999996" width="213.33333333333331" height="40.666666666666657"/>
+                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="32"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="H1l-e2-AeH">
-                                <rect key="frame" x="44" y="71" width="724" height="283"/>
+                                <rect key="frame" x="44" y="70.666666666666657" width="724" height="283.33333333333337"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nbB-Vm-1Wp">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -143,33 +149,53 @@
                                             <rect key="frame" x="0.0" y="0.0" width="256" height="256"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMD-Kq-FHf">
-                                                    <rect key="frame" x="0.0" y="0.0" width="256" height="256"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Uj9-fM-4qh">
+                                                    <rect key="frame" x="0.0" y="90" width="256" height="136"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Size" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSL-Vl-SDU">
+                                                            <rect key="frame" x="111.99999999999999" y="0.0" width="32.333333333333329" height="62"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vision" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3IX-G4-xDG">
+                                                            <rect key="frame" x="104.66666666666667" y="74" width="46.666666666666671" height="62"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Difficulty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMD-Kq-FHf">
+                                                    <rect key="frame" x="94" y="0.0" width="68.333333333333314" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="EUA-ES-Liw"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="top" secondItem="P4F-hU-viH" secondAttribute="top" id="46w-Yc-don"/>
-                                                <constraint firstAttribute="trailing" secondItem="JMD-Kq-FHf" secondAttribute="trailing" id="QeZ-AM-Btv"/>
-                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="leading" secondItem="P4F-hU-viH" secondAttribute="leading" id="Y4N-fO-okE"/>
-                                                <constraint firstAttribute="bottom" secondItem="JMD-Kq-FHf" secondAttribute="bottom" id="hYR-fQ-H07"/>
+                                                <constraint firstItem="Uj9-fM-4qh" firstAttribute="centerX" secondItem="P4F-hU-viH" secondAttribute="centerX" id="CFz-0j-fc1"/>
+                                                <constraint firstItem="Uj9-fM-4qh" firstAttribute="top" secondItem="JMD-Kq-FHf" secondAttribute="bottom" constant="30" id="Dr3-IV-Ja5"/>
+                                                <constraint firstAttribute="trailing" secondItem="Uj9-fM-4qh" secondAttribute="trailing" id="M3t-Ip-ohh"/>
+                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="top" secondItem="P4F-hU-viH" secondAttribute="top" id="c2t-HW-AA8"/>
+                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="centerX" secondItem="P4F-hU-viH" secondAttribute="centerX" id="hSP-63-Mz2"/>
+                                                <constraint firstItem="Uj9-fM-4qh" firstAttribute="leading" secondItem="P4F-hU-viH" secondAttribute="leading" id="nP4-C4-Du4"/>
+                                                <constraint firstAttribute="bottom" secondItem="Uj9-fM-4qh" secondAttribute="bottom" constant="30" id="nWI-Wj-8EP"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <size key="customSize" width="256" height="256"/>
                                         <connections>
-                                            <outlet property="LevelLabel" destination="JMD-Kq-FHf" id="ySP-3b-fsD"/>
+                                            <outlet property="DifficultyLabel" destination="JMD-Kq-FHf" id="dY8-If-IuT"/>
+                                            <outlet property="SizeLabel" destination="wSL-Vl-SDU" id="9Sh-cp-cot"/>
+                                            <outlet property="VisionLabel" destination="3IX-G4-xDG" id="uGq-Tx-ozT"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level Select" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jeM-6l-QBH">
-                                <rect key="frame" x="299" y="20" width="214" height="41"/>
-                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="32"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
