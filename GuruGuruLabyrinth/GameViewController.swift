@@ -12,15 +12,19 @@ import SpriteKit
 
 class GameViewController: UIViewController {
     
-    var optionalmazeSize: Int? {
+    var gameData: LevelData? {
         didSet {
-            if let mazeSizez = optionalmazeSize {
-                self.mazeSize = mazeSizez
+            if let gamedataz = gameData {
+                self.mazeSize = gamedataz.mazeSize
+                self.skyType = gamedataz.skyType
+                self.fogDistance = gamedataz.fogDistance
             }
         }
     }
     
     private var mazeSize = 0
+    private var skyType = ""
+    private var fogDistance: CGFloat = 0.0
     
     private lazy var mazeForGame = Maze(size: mazeSize)
     
@@ -52,6 +56,10 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        
         NotificationCenter.default.addObserver(self, selector: #selector(loadingFinished(_:)), name: .loadingEnded, object: nil)
         NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.2", "status" : "Initializing..."])
         showLoadingBar()
@@ -73,6 +81,7 @@ class GameViewController: UIViewController {
     }
     
     // MARK: - Device Control
+
     override var shouldAutorotate: Bool {
         return true
     }

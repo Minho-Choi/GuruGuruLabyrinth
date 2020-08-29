@@ -9,6 +9,12 @@
 import UIKit
 
 class FakeLaunchScreenViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

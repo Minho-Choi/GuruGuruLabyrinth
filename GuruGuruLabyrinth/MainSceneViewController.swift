@@ -17,6 +17,9 @@ class MainSceneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        
         let tapAnywhereRecoginzer = UITapGestureRecognizer()
         
         tapAnywhereRecoginzer.addTarget(self, action: #selector(whenTapped(recognizer:)))
@@ -31,7 +34,7 @@ class MainSceneViewController: UIViewController {
     }
     
     @objc func whenTapped(recognizer:UITapGestureRecognizer) {
-        performSegue(withIdentifier: "GameView", sender: 2)
+        performSegue(withIdentifier: "SelectView", sender: nil)
     }
     
     func fadeOut() {
@@ -55,8 +58,7 @@ class MainSceneViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "GameView" {
-            let gameViewController = segue.destination as! GameViewController
-            gameViewController.optionalmazeSize = sender as? Int
+            _ = segue.destination as! GameViewController
         }
     }
     

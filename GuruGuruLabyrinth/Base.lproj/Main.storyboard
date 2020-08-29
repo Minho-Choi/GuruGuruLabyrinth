@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -54,7 +55,7 @@
                     <navigationItem key="navigationItem" id="9ds-si-OM1"/>
                     <connections>
                         <outlet property="pressLabel" destination="aRA-uy-yN8" id="zhI-nz-F5E"/>
-                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="Ey4-x6-ePz"/>
+                        <segue destination="3sK-qm-48Y" kind="presentation" identifier="SelectView" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="exk-Jb-G8L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2Y-v4-4y9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -74,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-23" y="98"/>
+            <point key="canvasLocation" x="-1668" y="1337"/>
         </scene>
         <!--Fake Launch Screen View Controller-->
         <scene sceneID="rtF-9Y-Pzi">
@@ -117,6 +118,80 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Cl-EF-nZ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1667" y="97"/>
+        </scene>
+        <!--Select Level View Controller-->
+        <scene sceneID="cMp-iu-DVq">
+            <objects>
+                <viewController id="3sK-qm-48Y" customClass="SelectLevelViewController" customModule="GuruGuruLabyrinth" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zs5-hw-qIo">
+                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="H1l-e2-AeH">
+                                <rect key="frame" x="44" y="71" width="724" height="283"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nbB-Vm-1Wp">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LevelCell" id="eHB-LY-Wz0" customClass="LevelSelectCollectionViewCell" customModule="GuruGuruLabyrinth" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="13.666666666666666" width="256" height="256"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="P4F-hU-viH">
+                                            <rect key="frame" x="0.0" y="0.0" width="256" height="256"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMD-Kq-FHf">
+                                                    <rect key="frame" x="0.0" y="0.0" width="256" height="256"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="top" secondItem="P4F-hU-viH" secondAttribute="top" id="46w-Yc-don"/>
+                                                <constraint firstAttribute="trailing" secondItem="JMD-Kq-FHf" secondAttribute="trailing" id="QeZ-AM-Btv"/>
+                                                <constraint firstItem="JMD-Kq-FHf" firstAttribute="leading" secondItem="P4F-hU-viH" secondAttribute="leading" id="Y4N-fO-okE"/>
+                                                <constraint firstAttribute="bottom" secondItem="JMD-Kq-FHf" secondAttribute="bottom" id="hYR-fQ-H07"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="256" height="256"/>
+                                        <connections>
+                                            <outlet property="LevelLabel" destination="JMD-Kq-FHf" id="ySP-3b-fsD"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level Select" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jeM-6l-QBH">
+                                <rect key="frame" x="299" y="20" width="214" height="41"/>
+                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="32"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="jeM-6l-QBH" firstAttribute="top" secondItem="jxG-gs-lyW" secondAttribute="top" constant="20" id="3ah-xE-Ycc"/>
+                            <constraint firstItem="jeM-6l-QBH" firstAttribute="centerX" secondItem="Zs5-hw-qIo" secondAttribute="centerX" id="4Qr-dC-6dB"/>
+                            <constraint firstItem="H1l-e2-AeH" firstAttribute="leading" secondItem="jxG-gs-lyW" secondAttribute="leading" id="Bid-xr-l6X"/>
+                            <constraint firstItem="H1l-e2-AeH" firstAttribute="top" secondItem="jeM-6l-QBH" secondAttribute="bottom" constant="10" id="QgD-dk-EEL"/>
+                            <constraint firstItem="H1l-e2-AeH" firstAttribute="leading" secondItem="jxG-gs-lyW" secondAttribute="leading" id="Ufx-Dd-S52"/>
+                            <constraint firstItem="jxG-gs-lyW" firstAttribute="bottom" secondItem="H1l-e2-AeH" secondAttribute="bottom" id="ihk-mA-4xp"/>
+                            <constraint firstItem="jxG-gs-lyW" firstAttribute="trailing" secondItem="H1l-e2-AeH" secondAttribute="trailing" id="l7U-fM-GWs"/>
+                            <constraint firstItem="H1l-e2-AeH" firstAttribute="centerX" secondItem="Zs5-hw-qIo" secondAttribute="centerX" id="yON-aS-fP0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jxG-gs-lyW"/>
+                    </view>
+                    <connections>
+                        <outlet property="LevelSelection" destination="H1l-e2-AeH" id="YfJ-MM-bIV"/>
+                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="KjC-qV-XoX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M3Y-Z7-CW6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-839.40886699507394" y="1336.8"/>
         </scene>
     </scenes>
     <resources>

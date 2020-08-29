@@ -12,6 +12,8 @@
 		B42780DA24ED5FBB00482393 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42780D924ED5FBB00482393 /* LoadingView.swift */; };
 		B45A048824F3F2670024E4E2 /* DesignSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45A048724F3F2670024E4E2 /* DesignSettings.swift */; };
 		B45A048C24F40A9F0024E4E2 /* OverlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45A048B24F40A9F0024E4E2 /* OverlayScene.swift */; };
+		B47D0C5524FA171D0021AAE5 /* SelectLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D0C5424FA171D0021AAE5 /* SelectLevelViewController.swift */; };
+		B47D0C5724FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D0C5624FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift */; };
 		B48AA19B24E524C9005DCA06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48AA19A24E524C9005DCA06 /* AppDelegate.swift */; };
 		B48AA19D24E524C9005DCA06 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B48AA19C24E524C9005DCA06 /* art.scnassets */; };
 		B48AA19F24E524C9005DCA06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48AA19E24E524C9005DCA06 /* GameViewController.swift */; };
@@ -30,6 +32,8 @@
 		B42780D924ED5FBB00482393 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B45A048724F3F2670024E4E2 /* DesignSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSettings.swift; sourceTree = "<group>"; };
 		B45A048B24F40A9F0024E4E2 /* OverlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayScene.swift; sourceTree = "<group>"; };
+		B47D0C5424FA171D0021AAE5 /* SelectLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLevelViewController.swift; sourceTree = "<group>"; };
+		B47D0C5624FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectCollectionViewCell.swift; sourceTree = "<group>"; };
 		B48AA19724E524C9005DCA06 /* GuruGuruLabyrinth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GuruGuruLabyrinth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B48AA19A24E524C9005DCA06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B48AA19C24E524C9005DCA06 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 				B4B0C7CF24EBB4290057890B /* ClearView.swift */,
 				B42780D924ED5FBB00482393 /* LoadingView.swift */,
 				B48AA1A024E524C9005DCA06 /* Main.storyboard */,
+				B47D0C5624FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift */,
+				B47D0C5424FA171D0021AAE5 /* SelectLevelViewController.swift */,
 				B42780CF24ECF60C00482393 /* MainSceneViewController.swift */,
 				B48AA1AE24E5341D005DCA06 /* MazeModel.swift */,
 				B48AA1A324E524CB005DCA06 /* Assets.xcassets */,
@@ -171,6 +177,8 @@
 				B42780D824ED52CC00482393 /* FakeLaunchScreenViewController.swift in Sources */,
 				B4B0C7D024EBB4290057890B /* ClearView.swift in Sources */,
 				B42780D024ECF60C00482393 /* MainSceneViewController.swift in Sources */,
+				B47D0C5524FA171D0021AAE5 /* SelectLevelViewController.swift in Sources */,
+				B47D0C5724FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift in Sources */,
 				B48AA19F24E524C9005DCA06 /* GameViewController.swift in Sources */,
 				B48AA19B24E524C9005DCA06 /* AppDelegate.swift in Sources */,
 				B48AA1AF24E5341D005DCA06 /* MazeModel.swift in Sources */,
