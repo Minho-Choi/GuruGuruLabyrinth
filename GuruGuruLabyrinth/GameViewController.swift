@@ -54,6 +54,8 @@ class GameViewController: UIViewController {
     
     private var loadingView = LoadingView()
     
+    // MARK: - View Controller Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,6 +63,7 @@ class GameViewController: UIViewController {
         UIDevice.current.setValue(value, forKey: "orientation")
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadingFinished(_:)), name: .loadingEnded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(gameStatus(_:)), name: .gameButton, object: nil)
         NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.2", "status" : "Initializing..."])
         showLoadingBar()
         sceneSetup()
@@ -78,6 +81,13 @@ class GameViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         overlaySetup(size: size)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.removeFromParent()
+        
     }
     
     // MARK: - Device Control
@@ -106,6 +116,10 @@ class GameViewController: UIViewController {
         mazeForGame.generateMaze()
         
         scene = SCNScene(named: "art.scnassets/MainScene.scn")!
+        scene.fogEndDistance = fogDistance
+        scene.fogStartDistance = 0.0
+        scene.background.contents = UIImage(named: skyType)
+        scene.lightingEnvironment.contents = UIImage(named: skyType)
         
         sceneView.scene = scene
         
@@ -125,7 +139,7 @@ class GameViewController: UIViewController {
         swipeLeftRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeRightRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeUpRecognizer.addTarget(self, action: #selector(sceneViewSwipedUp(recognizer: )))
-        gameEndTapGestureRecognizer.addTarget(self, action: #selector(goToMain(recognizer:)))
+        gameEndTapGestureRecognizer.addTarget(self, action: #selector(clearTapped(recognizer:)))
         
         sceneView.addGestureRecognizer(tapTwiceRecognizer)
         sceneView.addGestureRecognizer(swipeLeftRecognizer)
@@ -149,6 +163,8 @@ class GameViewController: UIViewController {
         spriteScene.buttonFrame = CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength)
         spriteScene.buttonStrokeT = buttonStrokeThickness
         spriteScene.buttonCR = buttonRadius
+        spriteScene.popUpFrame = CGRect(x: popUpPosition.x, y: popUpPosition.y, width: popUpWidth, height: popUpHeight)
+        spriteScene.popUpCR = popUpRadius
         spriteScene.makeButton()
         sceneView.overlaySKScene = spriteScene
         
@@ -209,16 +225,16 @@ class GameViewController: UIViewController {
         let floorGeometry = SCNPlane(width: CGFloat(mazeSize + 1), height: CGFloat(mazeSize + 1))
         let floorTexture = floorGeometry.firstMaterial!.diffuse
         floorTexture.contents = UIImage(named: "art.scnassets/FloorDiffuse.tif")
-        //floorTexture.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-        floorGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/FloorNormal.tif")
-        //floorGeometry.firstMaterial!.normal.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-        floorGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/FloorOcclusion.tif")
-        //floorGeometry.firstMaterial!.ambientOcclusion.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-        floorGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/FloorRoughness.tif")
-        //floorGeometry.firstMaterial!.roughness.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-        floorGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/FloorHeight.tif")
-        //floorGeometry.firstMaterial!.displacement.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-        floorGeometry.firstMaterial!.displacement.intensity = 0.1
+        floorTexture.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+//        floorGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/FloorNormal.tif")
+//        //floorGeometry.firstMaterial!.normal.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+//        floorGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/FloorOcclusion.tif")
+//        //floorGeometry.firstMaterial!.ambientOcclusion.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+//        floorGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/FloorRoughness.tif")
+//        //floorGeometry.firstMaterial!.roughness.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+//        floorGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/FloorHeight.tif")
+//        //floorGeometry.firstMaterial!.displacement.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
+//        floorGeometry.firstMaterial!.displacement.intensity = 0.1
         
         var floorArray = [SCNNode]()
         
@@ -352,36 +368,50 @@ class GameViewController: UIViewController {
     }
     
     // MARK: - Go to main when touched
-    @objc private func goToMain(recognizer: UITapGestureRecognizer) {
+    @objc private func clearTapped(recognizer: UITapGestureRecognizer) {
         if isCleared {
-            self.dismiss(animated: true, completion: nil)
+            goToMain()
         }
     
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.removeFromParent()
+    func goToMain() {
+        NotificationCenter.default.removeObserver(self)
+        self.dismiss(animated: true, completion: nil)
     }
+    
     
     // MARK: - Loading Bar Appearance
     @objc func loadingFinished (_ notification: Notification) {
         print("progress written")
         if let data = notification.userInfo as? [String: String]
         {
-            DispatchQueue.main.async {
-                self.loadingView.setLoadingStatus(description: data["status"]!, percent: data["percentage"]!)
-            }
+            self.loadingView.setLoadingStatus(description: data["status"]!, percent: data["percentage"]!)
+            
         }
     }
-    
     
     func showLoadingBar() {
         DispatchQueue.main.async {
             self.loadingView.addSubview(self.view)
         }
     }
+    
+    
+    // MARK: - Pop Up Screen
+    
+    @objc func gameStatus(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: String] {
+            if data["status"] == "paused" {
+                self.sceneView.scene?.isPaused = true
+            } else if data["status"] == "resumed" {
+                self.sceneView.scene?.isPaused = false
+            } else if data["status"] == "goMain" {
+                goToMain()
+            }
+        }
+    }
+    
 
 }
 
@@ -440,4 +470,5 @@ extension GameViewController: SCNSceneRendererDelegate {
 
 extension Notification.Name {
     static let loadingEnded = Notification.Name("loadingEnded")
+    static let gameButton = Notification.Name("gameButton")
 }

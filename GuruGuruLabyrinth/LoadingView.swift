@@ -38,10 +38,12 @@ class LoadingView: UIView {
     }
     
     func setLoadingStatus(description: String, percent: String) {
-        if let floatPercent = Float(percent) {
-            loadingBar.setProgress(floatPercent, animated: true)
+        DispatchQueue.main.async {
+            if let floatPercent = Float(percent) {
+                self.loadingBar.setProgress(floatPercent, animated: true)
+            }
+            self.stautsLabel.attributedText = NSAttributedString(string: description, attributes: self.attribute)
         }
-        stautsLabel.attributedText = NSAttributedString(string: description, attributes: attribute)
     }
     
     func remove() {

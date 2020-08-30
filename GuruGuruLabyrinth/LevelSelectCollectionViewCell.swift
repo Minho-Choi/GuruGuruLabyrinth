@@ -26,6 +26,11 @@ class LevelSelectCollectionViewCell: UICollectionViewCell {
             VisionLabel.attributedText = NSAttributedString(string: "Vision\n\(levelData!.fogDistance)", attributes: descattributes)
             VisionLabel.textAlignment = .center
             VisionLabel.numberOfLines = 2
+            
+            self.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            self.layer.borderWidth = 5.0
+            self.layer.cornerRadius = 10.0
+            
         }
     }
     
