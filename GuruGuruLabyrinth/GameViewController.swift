@@ -74,20 +74,13 @@ class GameViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Completing..."])
-        DispatchQueue.main.async {
-            self.loadingView.remove()
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingView.remove()
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         overlaySetup(size: size)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.removeFromParent()
-        
     }
     
     // MARK: - Device Control
@@ -149,10 +142,6 @@ class GameViewController: UIViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         timer?.tolerance = 0.01
-        
-        //sceneView.allowsCameraControl = true
-        
-        
         
     }
     
@@ -351,8 +340,8 @@ class GameViewController: UIViewController {
             self.view.addSubview(clearLabel)
             print("game clear")
         }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
-            self.sceneView.scene?.isPaused = true
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) { [weak self] in
+            self?.sceneView.scene?.isPaused = true
         }
     }
     
@@ -377,7 +366,7 @@ class GameViewController: UIViewController {
     
     func goToMain() {
         NotificationCenter.default.removeObserver(self)
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: {self.removeFromParent()})
     }
     
     
@@ -392,8 +381,8 @@ class GameViewController: UIViewController {
     }
     
     func showLoadingBar() {
-        DispatchQueue.main.async {
-            self.loadingView.addSubview(self.view)
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingView.addSubview((self?.view)!)
         }
     }
     

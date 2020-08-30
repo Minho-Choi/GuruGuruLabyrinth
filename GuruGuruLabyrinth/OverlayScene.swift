@@ -77,6 +77,7 @@ class OverlayScene: SKScene {
         resumeLabel.fontSize = 24
         resumeLabel.horizontalAlignmentMode = .left
         resumeLabel.position = CGPoint(x: resumeButtonOrientation.x, y: resumeButtonOrientation.y)
+        resumeLabel.name = "resume"
         
         resumeButton.addChild(resumeLabel)
         resumeButton.name = "resume"
@@ -89,6 +90,7 @@ class OverlayScene: SKScene {
         goMainLabel.fontSize = 24
         goMainLabel.horizontalAlignmentMode = .left
         goMainLabel.position = CGPoint(x: goToMainButtonOrientation.x, y: goToMainButtonOrientation.y)
+        goMainLabel.name = "goMain"
         
         goMainButton.addChild(goMainLabel)
         goMainButton.name = "goMain"
