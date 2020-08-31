@@ -58,7 +58,7 @@ class MainSceneViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "SelectView" {
-            let selectView = segue.destination as! SelectLevelViewController
+            let _ = segue.destination as! SelectLevelViewController
         }
     }
     

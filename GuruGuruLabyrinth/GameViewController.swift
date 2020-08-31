@@ -42,6 +42,7 @@ class GameViewController: UIViewController {
     private var motionForce = SCNVector3(0, 0, 0)
     
     private var cameraDirection = 0
+    private var spriteScene = OverlayScene()
     
     private unowned var timer: Timer?
     
@@ -87,6 +88,7 @@ class GameViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
         self.removeFromParent()
     }
     
@@ -149,12 +151,11 @@ class GameViewController: UIViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         timer?.tolerance = 0.01
-        
     }
     
     private func overlaySetup(size: CGSize) {
         
-        let spriteScene = OverlayScene(size: size)
+        spriteScene.size = size
         spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
         spriteScene.buttonFrame = CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength)
         spriteScene.buttonStrokeT = buttonStrokeThickness
@@ -371,10 +372,12 @@ class GameViewController: UIViewController {
     }
     
     func goToMain() {
-        NotificationCenter.default.removeObserver(self)
+        timer?.invalidate()
+        timer = nil
+        spriteScene.removePopUp()
         sceneView = nil
-        self.dismiss(animated: false, completion: nil)
-        
+        self.dismiss(animated: true, completion: nil)
+        print("dismissed")
     }
     
     

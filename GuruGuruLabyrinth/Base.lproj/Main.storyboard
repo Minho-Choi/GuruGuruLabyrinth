@@ -212,7 +212,7 @@
                     </view>
                     <connections>
                         <outlet property="LevelSelection" destination="H1l-e2-AeH" id="YfJ-MM-bIV"/>
-                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="KjC-qV-XoX"/>
+                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" animates="NO" modalPresentationStyle="fullScreen" id="rla-z2-8It"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M3Y-Z7-CW6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

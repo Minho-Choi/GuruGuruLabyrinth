@@ -30,7 +30,7 @@ extension GameViewController {
         static let timerAspectRatio: CGFloat = 0.5
     }
     internal var buttonRadius: CGFloat {
-        return SizeRatio.buttonRadiusToButtonLength * self.buttonLength
+        return SizeRatio.buttonRadiusToButtonLength * buttonLength
     }
     
     internal var buttonLength: CGFloat {
@@ -50,7 +50,7 @@ extension GameViewController {
     }
     
     internal var buttonStrokeThickness: CGFloat {
-        return SizeRatio.buttonStrokeThicknessToButtonLength * self.buttonLength
+        return SizeRatio.buttonStrokeThicknessToButtonLength * buttonLength
     }
     
     internal var popUpWidth: CGFloat {

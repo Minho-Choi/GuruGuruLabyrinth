@@ -18,9 +18,18 @@ class OverlayScene: SKScene {
     var popUpFrame = CGRect()
     var popUpCR = CGFloat()
     
+    var timerTime = Float() {
+        didSet {
+            timerNode.text = "\(timerTime)"
+            
+        }
+    }
+    
     var isPauseButtonPushed = false
     
     lazy var popUpSquare = SKShapeNode(rect: popUpFrame, cornerRadius: popUpCR)
+    
+    var timerNode = SKLabelNode(text: "0.0")
     
     func makeButton() {
         
@@ -32,6 +41,15 @@ class OverlayScene: SKScene {
         buttonBack.name = "pause"
 
         self.addChild(buttonBack)
+        
+        timerNode.fontSize = 24
+        timerNode.fontColor = .white
+        timerNode.horizontalAlignmentMode = .center
+        if let parentView = view {
+            timerNode.position = CGPoint(x: parentView.frame.midX, y: parentView.frame.maxY - 24)
+        }
+        self.addChild(timerNode)
+        
     }
         
     
@@ -39,7 +57,7 @@ class OverlayScene: SKScene {
         let touch = touches.first
         let positionInScene = touch!.location(in: self)
         let touchedNode = self.nodes(at: positionInScene)
-        print(touchedNode)
+        // print(touchedNode)
         if let node = touchedNode.first {
             if node.name! == "pause" &&  !isPauseButtonPushed{
                 // do popup, notify scene
