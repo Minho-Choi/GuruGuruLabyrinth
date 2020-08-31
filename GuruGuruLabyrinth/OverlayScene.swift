@@ -18,18 +18,12 @@ class OverlayScene: SKScene {
     var popUpFrame = CGRect()
     var popUpCR = CGFloat()
     
-    var timerTime = Float() {
-        didSet {
-            timerNode.text = "\(timerTime)"
-            
-        }
-    }
-    
     var isPauseButtonPushed = false
     
     lazy var popUpSquare = SKShapeNode(rect: popUpFrame, cornerRadius: popUpCR)
     
     var timerNode = SKLabelNode(text: "0.0")
+    var timer = Float()
     
     func makeButton() {
         
@@ -42,14 +36,18 @@ class OverlayScene: SKScene {
 
         self.addChild(buttonBack)
         
-        timerNode.fontSize = 24
-        timerNode.fontColor = .white
+        timerNode.fontSize = 48
+        timerNode.color = .white
+        timerNode.fontColor = .black
         timerNode.horizontalAlignmentMode = .center
-        if let parentView = view {
-            timerNode.position = CGPoint(x: parentView.frame.midX, y: parentView.frame.maxY - 24)
+        timerNode.position = CGPoint(x: popUpFrame.minX + popUpFrame.width / 2, y: popUpFrame.maxY + popUpFrame.height / 5)
+        let actionWait = SKAction.wait(forDuration: 1)
+        let actionRun = SKAction.run { [unowned self] in
+            self.timer += 1
+            self.timerNode.text = "\(self.timer)"
         }
         self.addChild(timerNode)
-        
+        timerNode.run(SKAction.repeatForever(SKAction.sequence([actionWait, actionRun])))
     }
         
     
@@ -72,7 +70,6 @@ class OverlayScene: SKScene {
             } else if node.name! == "goMain" {
                 // go to Main
                 NotificationCenter.default.post(name: .gameButton, object: self, userInfo: ["status" : "goMain"])
-
             }
         }
     }
