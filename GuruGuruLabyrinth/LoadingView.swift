@@ -38,16 +38,14 @@ class LoadingView: UIView {
     }
     
     func setLoadingStatus(description: String, percent: String) {
-        DispatchQueue.main.async { [weak self] in
-            if let floatPercent = Float(percent) {
-                self?.loadingBar.setProgress(floatPercent, animated: true)
-            }
-            self?.stautsLabel.attributedText = NSAttributedString(string: description, attributes: self?.attribute)
+        if let floatPercent = Float(percent) {
+            self.loadingBar.setProgress(floatPercent, animated: true)
         }
+        self.stautsLabel.attributedText = NSAttributedString(string: description, attributes: self.attribute)
+    
     }
     
     func remove() {
-        
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.0,
             delay: 1.0,

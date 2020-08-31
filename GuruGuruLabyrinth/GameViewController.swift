@@ -43,7 +43,8 @@ class GameViewController: UIViewController {
     
     private var cameraDirection = 0
     
-    private var timer: Timer?
+    private unowned var timer: Timer?
+    
     var timePassed: Float = 0.0
     
     var isCleared = false {
@@ -73,14 +74,20 @@ class GameViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Completing..."])
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "1.0", "status" : "Generating Maze..."])
         DispatchQueue.main.async { [weak self] in
             self?.loadingView.remove()
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         overlaySetup(size: size)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.removeFromParent()
     }
     
     // MARK: - Device Control
@@ -105,7 +112,7 @@ class GameViewController: UIViewController {
         
         sceneView = (self.view as! SCNView)
         sceneView.delegate = self
-        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.6", "status" : "Generating Maze..."])
+        NotificationCenter.default.post(name: .loadingEnded, object: self, userInfo: ["percentage" : "0.6", "status" : "Calculating..."])
         mazeForGame.generateMaze()
         
         scene = SCNScene(named: "art.scnassets/MainScene.scn")!
@@ -331,7 +338,7 @@ class GameViewController: UIViewController {
     func showClear() {
         timer?.invalidate()
         timer = nil
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [unowned self] in
             let clearLabel = ClearView(frame: self.sceneView.frame)
             clearLabel.time = self.timePassed
             clearLabel.customFrame = CGRect(x: self.popUpPosition.x, y: self.popUpPosition.y, width: self.popUpWidth, height: self.popUpHeight)
@@ -361,22 +368,20 @@ class GameViewController: UIViewController {
         if isCleared {
             goToMain()
         }
-    
     }
     
     func goToMain() {
         NotificationCenter.default.removeObserver(self)
-        self.dismiss(animated: false, completion: {self.removeFromParent()})
+        sceneView = nil
+        self.dismiss(animated: false, completion: nil)
+        
     }
     
     
     // MARK: - Loading Bar Appearance
     @objc func loadingFinished (_ notification: Notification) {
-        print("progress written")
-        if let data = notification.userInfo as? [String: String]
-        {
-            self.loadingView.setLoadingStatus(description: data["status"]!, percent: data["percentage"]!)
-            
+        if let data = notification.userInfo as? [String: String] {
+            loadingView.setLoadingStatus(description: data["status"]!, percent: data["percentage"]!)
         }
     }
     
@@ -392,9 +397,9 @@ class GameViewController: UIViewController {
     @objc func gameStatus(_ notification: Notification) {
         if let data = notification.userInfo as? [String: String] {
             if data["status"] == "paused" {
-                self.sceneView.scene?.isPaused = true
+                sceneView.scene?.isPaused = true
             } else if data["status"] == "resumed" {
-                self.sceneView.scene?.isPaused = false
+                sceneView.scene?.isPaused = false
             } else if data["status"] == "goMain" {
                 goToMain()
             }
