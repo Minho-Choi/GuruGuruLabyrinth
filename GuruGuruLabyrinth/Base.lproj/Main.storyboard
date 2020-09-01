@@ -55,7 +55,7 @@
                     <navigationItem key="navigationItem" id="9ds-si-OM1"/>
                     <connections>
                         <outlet property="pressLabel" destination="aRA-uy-yN8" id="zhI-nz-F5E"/>
-                        <segue destination="3sK-qm-48Y" kind="presentation" identifier="SelectView" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="exk-Jb-G8L"/>
+                        <segue destination="3sK-qm-48Y" kind="presentation" identifier="SelectView" modalPresentationStyle="fullScreen" modalTransitionStyle="partialCurl" id="exk-Jb-G8L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2Y-v4-4y9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -112,7 +112,7 @@
                         <viewLayoutGuide key="safeArea" id="u4Y-kG-wEG"/>
                     </view>
                     <connections>
-                        <segue destination="QNC-V5-MrV" kind="presentation" identifier="MainView" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="3A8-rf-yt9"/>
+                        <segue destination="QNC-V5-MrV" kind="presentation" identifier="MainView" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="3A8-rf-yt9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Cl-EF-nZ1" userLabel="First Responder" sceneMemberID="firstResponder"/>

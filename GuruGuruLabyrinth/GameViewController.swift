@@ -44,8 +44,6 @@ class GameViewController: UIViewController {
     private var cameraDirection = 0
     private var spriteScene = OverlayScene()
     
-    private unowned var timer: Timer?
-    
     var timePassed: Float = 0.0
     
     var isCleared = false {
@@ -148,9 +146,6 @@ class GameViewController: UIViewController {
         sceneView.addGestureRecognizer(swipeRightRecognizer)
         sceneView.addGestureRecognizer(swipeUpRecognizer)
         sceneView.addGestureRecognizer(gameEndTapGestureRecognizer)
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
-        timer?.tolerance = 0.01
     }
     
     private func overlaySetup(size: CGSize) {
@@ -190,11 +185,7 @@ class GameViewController: UIViewController {
     @objc private func sceneViewSwipedUp(recognizer: UISwipeGestureRecognizer) {
         motionForce = SCNVector3(0, 1.4, 0)
     }
-    
-    // 0.1 second timer
-    @objc private func onTimerFires() {
-        timePassed += 0.1
-    }
+
     
     // MARK: - Setting Up the Nodes
     private func nodeSetup() {
@@ -337,18 +328,17 @@ class GameViewController: UIViewController {
     
     // MARK: - Game Clear Function
     func showClear() {
-        timer?.invalidate()
-        timer = nil
+        spriteScene.timerNode.isPaused = true
         DispatchQueue.main.async { [unowned self] in
             let clearLabel = ClearView(frame: self.sceneView.frame)
-            clearLabel.time = self.timePassed
+            clearLabel.time = self.spriteScene.timer
             clearLabel.customFrame = CGRect(x: self.popUpPosition.x, y: self.popUpPosition.y, width: self.popUpWidth, height: self.popUpHeight)
             clearLabel.customRadius = self.popUpRadius
             clearLabel.addSubview(self.view)
             self.view.addSubview(clearLabel)
             print("game clear")
         }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) { [weak self] in
             self?.sceneView.scene?.isPaused = true
         }
     }
@@ -361,6 +351,7 @@ class GameViewController: UIViewController {
         
         //node.position = SCNVector3(randomXPosition, 15.0, randomZPosition)
         node.position = SCNVector3(Float(mazeSize - 1), 15.0, Float(mazeSize - 1))
+        //node.position = SCNVector3(0, 15.0, 0)
         return node
     }
     
@@ -372,8 +363,6 @@ class GameViewController: UIViewController {
     }
     
     func goToMain() {
-        timer?.invalidate()
-        timer = nil
         spriteScene.removePopUp()
         sceneView = nil
         self.dismiss(animated: true, completion: nil)
@@ -426,7 +415,7 @@ extension GameViewController: SCNSceneRendererDelegate {
             
             ballNode.physicsBody?.velocity = SCNVector3(0, 0.2, 0)
             selfieStickNode.rotation = SCNVector4(1, 0, 0, 90)
-            selfieStickNode.position = ballPosition
+            selfieStickNode.position = ballPosition - SCNVector3(CGFloat((mazeSize - 1) / 2), -1, CGFloat((mazeSize - 1) / 2))
             
         } else {
             
@@ -458,7 +447,8 @@ extension GameViewController: SCNSceneRendererDelegate {
             ballNode.physicsBody?.velocity += yRot(vector3: motionForce, vector4: SCNVector4(0, 1, 0, -rotationAngle))
             motionForce.y = 0
             
-            if Int(round(ballPosition.x)) == mazeSize - 1 && Int(round(ballPosition.z)) == mazeSize - 1 && !isCleared{
+            // Game Clear 조건
+            if Int(round(ballPosition.x)) == Int(portalNode.position.x) && Int(round(ballPosition.z)) == Int(portalNode.position.z) && !isCleared{
                 isCleared.toggle()
             }
         }

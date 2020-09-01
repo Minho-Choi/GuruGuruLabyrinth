@@ -41,9 +41,9 @@ class OverlayScene: SKScene {
         timerNode.fontColor = .black
         timerNode.horizontalAlignmentMode = .center
         timerNode.position = CGPoint(x: popUpFrame.minX + popUpFrame.width / 2, y: popUpFrame.maxY + popUpFrame.height / 5)
-        let actionWait = SKAction.wait(forDuration: 1)
+        let actionWait = SKAction.wait(forDuration: 0.1)
         let actionRun = SKAction.run { [unowned self] in
-            self.timer += 1
+            self.timer += 0.1
             self.timerNode.text = "\(self.timer)"
         }
         self.addChild(timerNode)
@@ -79,6 +79,7 @@ class OverlayScene: SKScene {
         popUpSquare.name = "popUpWindow"
         self.addChild(popUpSquare)
         
+        timerNode.isPaused = true
         
         let buttonSize = CGSize(width: popUpFrame.width * 0.7, height: popUpFrame.height * 0.2)
         let resumeButtonOrientation = CGPoint(x: popUpFrame.width * 0.15 + popUpFrame.minX, y: popUpFrame.height * 0.6 + popUpFrame.minY)
@@ -117,6 +118,7 @@ class OverlayScene: SKScene {
     
     func removePopUp() {
         popUpSquare.removeFromParent()
+        timerNode.isPaused = false
     }
 
 }
