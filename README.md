@@ -27,18 +27,21 @@ Ball-rolling maze game based on Swift SceneKit
 > ### - 타이머
 > ### - 런치 스크린 및 애니메이션
 > ### - 타이틀 뷰, 세그
-> ### - 로딩 바(Notification center로 구현)
+> ### - 로딩 바(Notification center로 구현
+> ### - SceneKit 위에 SpriteKit overlay, 시간 및 버튼 표시(SKAction으로 타이머 구현)
+> ### - 레벨 선택 기능
 
 ## 향후 구현해야 할 것들
 
 > ### - 조작 방식 변경(버튼이나 탭 제스처)
 > ### - 로딩 바 Delegation으로 구현해보기
-> ### - SceneKit 위에 SpriteKit overlay, 시간 및 버튼 표시
 > ### - 공, 바닥, 벽 텍스쳐 선택 기능
 > ### - 공 종류에 따른 physics 변경
-> ### - 레벨 선택 기능
 > ### - 알고리즘 수정(m by n 역시 가능하도록)
 > ### - 몬스터
 > ### - 광고
 > ### - 음악, 효과음
 
+## 주의할 점
+
+> ### - Memory Leak 
