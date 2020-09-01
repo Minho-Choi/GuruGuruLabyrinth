@@ -43,7 +43,7 @@ class MainSceneViewController: UIViewController {
         delay: 0.5,
         options: [.allowUserInteraction],
         animations: { self.pressLabel.alpha = 0.0 },
-        completion: { if $0 == .end { self.fadeIn() }} )
+        completion: { if ( $0 == .current || $0 == .end ) { self.fadeIn() }} )
     }
     
     func fadeIn() {
@@ -52,7 +52,7 @@ class MainSceneViewController: UIViewController {
             delay: 0.0,
             options: [.allowUserInteraction],
             animations: { self.pressLabel.alpha = 1.0 },
-            completion: {if $0 == .end { self.fadeOut() }} )
+            completion: {if ( $0 == .current || $0 == .end ) { self.fadeOut() }} )
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

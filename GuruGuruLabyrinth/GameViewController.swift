@@ -12,7 +12,7 @@ import SpriteKit
 
 class GameViewController: UIViewController {
     
-    var gameData: LevelData? {
+    var gameData: Level? {
         didSet {
             if let gamedataz = gameData {
                 self.mazeSize = gamedataz.mazeSize
@@ -49,6 +49,11 @@ class GameViewController: UIViewController {
     var isCleared = false {
         didSet {
             showClear()
+        }
+    }
+    var isDead = false {
+        didSet {
+            showGameOver()
         }
     }
     
@@ -152,11 +157,13 @@ class GameViewController: UIViewController {
         
         spriteScene.size = size
         spriteScene.anchorPoint = CGPoint(x: 0, y: 0)
-        spriteScene.buttonFrame = CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength)
-        spriteScene.buttonStrokeT = buttonStrokeThickness
-        spriteScene.buttonCR = buttonRadius
-        spriteScene.popUpFrame = CGRect(x: popUpPosition.x, y: popUpPosition.y, width: popUpWidth, height: popUpHeight)
-        spriteScene.popUpCR = popUpRadius
+        spriteScene.setSizes(
+            buttonFrame: CGRect(x: buttonPosition.x, y: buttonPosition.y, width: buttonLength, height: buttonLength),
+            buttonBoundsT: buttonStrokeThickness,
+            buttonCR: buttonRadius,
+            popUpFrame: CGRect(x: popUpPosition.x, y: popUpPosition.y, width: popUpWidth, height: popUpHeight),
+            popUpCR: popUpRadius)
+
         spriteScene.makeButton()
         sceneView.overlaySKScene = spriteScene
         
@@ -210,19 +217,8 @@ class GameViewController: UIViewController {
     
     private func addFloors(cellData: [Cell]) -> [SCNNode] {
         // Floor texture modification
-        let floorGeometry = SCNPlane(width: CGFloat(mazeSize + 1), height: CGFloat(mazeSize + 1))
-        let floorTexture = floorGeometry.firstMaterial!.diffuse
-        floorTexture.contents = UIImage(named: "art.scnassets/FloorDiffuse.tif")
-        floorTexture.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-//        floorGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/FloorNormal.tif")
-//        //floorGeometry.firstMaterial!.normal.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-//        floorGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/FloorOcclusion.tif")
-//        //floorGeometry.firstMaterial!.ambientOcclusion.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-//        floorGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/FloorRoughness.tif")
-//        //floorGeometry.firstMaterial!.roughness.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-//        floorGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/FloorHeight.tif")
-//        //floorGeometry.firstMaterial!.displacement.contentsTransform = SCNMatrix4MakeScale(Float(mazeSize), Float(mazeSize), 0)
-//        floorGeometry.firstMaterial!.displacement.intensity = 0.1
+        //let floorGeometry = SCNPlane(width: CGFloat(mazeSize + 1), height: CGFloat(mazeSize + 1))
+        let floorGeometry = scene.rootNode.childNode(withName: "floor", recursively: true)!.geometry!
         
         var floorArray = [SCNNode]()
         
@@ -328,10 +324,10 @@ class GameViewController: UIViewController {
     
     // MARK: - Game Clear Function
     func showClear() {
-        spriteScene.timerNode.isPaused = true
+        spriteScene.stopTimer()
         DispatchQueue.main.async { [unowned self] in
             let clearLabel = ClearView(frame: self.sceneView.frame)
-            clearLabel.time = self.spriteScene.timer
+            clearLabel.time = self.spriteScene.getTime()
             clearLabel.customFrame = CGRect(x: self.popUpPosition.x, y: self.popUpPosition.y, width: self.popUpWidth, height: self.popUpHeight)
             clearLabel.customRadius = self.popUpRadius
             clearLabel.addSubview(self.view)
@@ -339,6 +335,13 @@ class GameViewController: UIViewController {
             print("game clear")
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) { [weak self] in
+            self?.sceneView.scene?.isPaused = true
+        }
+    }
+    
+    func showGameOver() {
+        spriteScene.stopTimer()
+        DispatchQueue.main.async { [weak self] in
             self?.sceneView.scene?.isPaused = true
         }
     }
@@ -450,6 +453,9 @@ extension GameViewController: SCNSceneRendererDelegate {
             // Game Clear 조건
             if Int(round(ballPosition.x)) == Int(portalNode.position.x) && Int(round(ballPosition.z)) == Int(portalNode.position.z) && !isCleared{
                 isCleared.toggle()
+            }
+            if ballPosition.z < -5 {
+                isDead.toggle()
             }
         }
     }

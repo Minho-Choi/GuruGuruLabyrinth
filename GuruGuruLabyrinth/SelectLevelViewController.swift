@@ -10,14 +10,7 @@ import UIKit
 
 class SelectLevelViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-
-    let level1 = LevelData(size: 4, levelName: "Easy", fogDistance: 0, skyBrightness: "art.scnassets/sky/Sky_Day_BlueSky_Equirect.png")
-    let level2 = LevelData(size: 8, levelName: "Normal", fogDistance: 20, skyBrightness: "art.scnassets/sky/Epic_BlueSunset_EquiRect_flat.png")
-    let level3 = LevelData(size: 12, levelName: "Hard", fogDistance: 15, skyBrightness: "art.scnassets/sky/AllSky_Overcast4_Low.png")
-    let level4 = LevelData(size: 16, levelName: "Extreme", fogDistance: 10, skyBrightness: "art.scnassets/sky/AllSky_Night_MoonBurst Equirect.png")
-    let level5 = LevelData(size: 20, levelName: "Impossible", fogDistance: 5, skyBrightness: "art.scnassets/sky/AllSky_Space_AnotherPlanet Equirect.png")
-    
-    lazy var levelArray: [LevelData] = [level1, level2, level3, level4, level5]
+    lazy var levelArray: [Level] = DataSet().levelArray
 
     @IBOutlet weak var LevelSelection: UICollectionView! {
         didSet {
@@ -59,23 +52,7 @@ class SelectLevelViewController: UIViewController, UICollectionViewDelegate, UIC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GameView" {
             let gameViewController = segue.destination as! GameViewController
-            gameViewController.gameData = sender as? LevelData
+            gameViewController.gameData = sender as? Level
         }
-    }
-}
-
-struct LevelData {
-    
-    var mazeSize: Int
-    var levelName: String
-    
-    var fogDistance: CGFloat
-    var skyType: String
-    
-    init(size: Int, levelName: String, fogDistance: Int, skyBrightness: String) {
-        self.mazeSize = size
-        self.levelName = levelName
-        self.fogDistance = CGFloat(fogDistance)
-        self.skyType = skyBrightness
     }
 }

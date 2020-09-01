@@ -11,19 +11,19 @@ import SpriteKit
 
 class OverlayScene: SKScene {
     
-    var buttonFrame = CGRect()
-    var buttonCR = CGFloat()
-    var buttonStrokeT = CGFloat()
+    private var buttonFrame = CGRect()
+    private var buttonCR = CGFloat()
+    private var buttonStrokeT = CGFloat()
     
-    var popUpFrame = CGRect()
-    var popUpCR = CGFloat()
+    private var popUpFrame = CGRect()
+    private var popUpCR = CGFloat()
     
-    var isPauseButtonPushed = false
+    private var isPauseButtonPushed = false
     
-    lazy var popUpSquare = SKShapeNode(rect: popUpFrame, cornerRadius: popUpCR)
+    private lazy var popUpSquare = SKShapeNode(rect: popUpFrame, cornerRadius: popUpCR)
     
-    var timerNode = SKLabelNode(text: "0.0")
-    var timer = Float()
+    private var timerNode = SKLabelNode(text: "0.0")
+    private var timer = Float()
     
     func makeButton() {
         
@@ -31,7 +31,7 @@ class OverlayScene: SKScene {
         buttonBack.fillColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         buttonBack.strokeColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
         buttonBack.lineWidth = buttonStrokeT
-        buttonBack.fillTexture = SKTexture(image: UIImage(named: "art.scnassets/65-01.png")!)
+        buttonBack.fillTexture = SKTexture(image: UIImage(named: "art.scnassets/pause.png")!)
         buttonBack.name = "pause"
 
         self.addChild(buttonBack)
@@ -44,14 +44,30 @@ class OverlayScene: SKScene {
         let actionWait = SKAction.wait(forDuration: 0.1)
         let actionRun = SKAction.run { [unowned self] in
             self.timer += 0.1
-            self.timerNode.text = "\(self.timer)"
+            self.timerNode.text = String(format: "%.1f", self.timer)
         }
         self.addChild(timerNode)
         timerNode.run(SKAction.repeatForever(SKAction.sequence([actionWait, actionRun])))
     }
+    
+    func stopTimer() {
+        timerNode.isPaused = true
+    }
+    
+    func getTime() -> Float {
+        return timer
+    }
+    
+    func setSizes(buttonFrame: CGRect, buttonBoundsT: CGFloat, buttonCR: CGFloat, popUpFrame: CGRect, popUpCR: CGFloat) {
+        self.buttonFrame = buttonFrame
+        self.buttonStrokeT = buttonBoundsT
+        self.buttonCR = buttonCR
+        self.popUpFrame = popUpFrame
+        self.popUpCR = popUpCR
+    }
         
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    internal override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let positionInScene = touch!.location(in: self)
         let touchedNode = self.nodes(at: positionInScene)

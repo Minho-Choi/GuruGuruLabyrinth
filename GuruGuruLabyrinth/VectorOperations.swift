@@ -22,6 +22,7 @@ func +=( left: inout SCNVector3, right: SCNVector3) {
     left = left + right
 }
 
+
 func yRot(vector3: SCNVector3, vector4: SCNVector4) -> SCNVector3 {
     let angle = vector4.w
     let calculatedVector = SCNVector3(vector3.x * cos(angle) - vector3.z * sin(angle), vector3.y, vector3.x * sin(angle) + vector3.z * cos(angle))

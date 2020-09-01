@@ -10,7 +10,7 @@ import UIKit
 
 class LevelSelectCollectionViewCell: UICollectionViewCell {
     
-    var levelData: LevelData? {
+    var levelData: Level? {
         didSet {
             let Titlefont = UIFont.systemFont(ofSize: 32)
             let Descfont = UIFont.systemFont(ofSize: 24)

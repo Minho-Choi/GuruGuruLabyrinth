@@ -24,6 +24,9 @@
 		B4B0C7C824E802C00057890B /* MotionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B0C7C724E802C00057890B /* MotionHelper.swift */; };
 		B4B0C7CA24E802C80057890B /* VectorOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B0C7C924E802C80057890B /* VectorOperations.swift */; };
 		B4B0C7D024EBB4290057890B /* ClearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B0C7CF24EBB4290057890B /* ClearView.swift */; };
+		B4C8242C24FE23B000D77D79 /* CustomStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C8242B24FE23B000D77D79 /* CustomStructs.swift */; };
+		B4C8242E24FE3D2600D77D79 /* BallSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C8242D24FE3D2600D77D79 /* BallSelectViewController.swift */; };
+		B4C8243024FE40F300D77D79 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C8242F24FE40F300D77D79 /* GameData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +49,9 @@
 		B4B0C7C724E802C00057890B /* MotionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionHelper.swift; sourceTree = "<group>"; };
 		B4B0C7C924E802C80057890B /* VectorOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorOperations.swift; sourceTree = "<group>"; };
 		B4B0C7CF24EBB4290057890B /* ClearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearView.swift; sourceTree = "<group>"; };
+		B4C8242B24FE23B000D77D79 /* CustomStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStructs.swift; sourceTree = "<group>"; };
+		B4C8242D24FE3D2600D77D79 /* BallSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallSelectViewController.swift; sourceTree = "<group>"; };
+		B4C8242F24FE40F300D77D79 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,19 +88,22 @@
 				B4B0C7C724E802C00057890B /* MotionHelper.swift */,
 				B4B0C7C924E802C80057890B /* VectorOperations.swift */,
 				B48AA19C24E524C9005DCA06 /* art.scnassets */,
+				B48AA1A024E524C9005DCA06 /* Main.storyboard */,
 				B48AA19E24E524C9005DCA06 /* GameViewController.swift */,
 				B45A048B24F40A9F0024E4E2 /* OverlayScene.swift */,
 				B45A048724F3F2670024E4E2 /* DesignSettings.swift */,
 				B4B0C7CF24EBB4290057890B /* ClearView.swift */,
 				B42780D924ED5FBB00482393 /* LoadingView.swift */,
-				B48AA1A024E524C9005DCA06 /* Main.storyboard */,
-				B47D0C5624FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift */,
+				B4C8242D24FE3D2600D77D79 /* BallSelectViewController.swift */,
 				B47D0C5424FA171D0021AAE5 /* SelectLevelViewController.swift */,
+				B47D0C5624FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift */,
 				B42780CF24ECF60C00482393 /* MainSceneViewController.swift */,
+				B42780D724ED52CC00482393 /* FakeLaunchScreenViewController.swift */,
 				B48AA1AE24E5341D005DCA06 /* MazeModel.swift */,
+				B4C8242B24FE23B000D77D79 /* CustomStructs.swift */,
+				B4C8242F24FE40F300D77D79 /* GameData.swift */,
 				B48AA1A324E524CB005DCA06 /* Assets.xcassets */,
 				B48AA1A524E524CB005DCA06 /* LaunchScreen.storyboard */,
-				B42780D724ED52CC00482393 /* FakeLaunchScreenViewController.swift */,
 				B48AA1A824E524CB005DCA06 /* Info.plist */,
 			);
 			path = GuruGuruLabyrinth;
@@ -173,16 +182,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B45A048824F3F2670024E4E2 /* DesignSettings.swift in Sources */,
+				B4C8242E24FE3D2600D77D79 /* BallSelectViewController.swift in Sources */,
 				B45A048C24F40A9F0024E4E2 /* OverlayScene.swift in Sources */,
 				B42780D824ED52CC00482393 /* FakeLaunchScreenViewController.swift in Sources */,
 				B4B0C7D024EBB4290057890B /* ClearView.swift in Sources */,
 				B42780D024ECF60C00482393 /* MainSceneViewController.swift in Sources */,
+				B4C8242C24FE23B000D77D79 /* CustomStructs.swift in Sources */,
 				B47D0C5524FA171D0021AAE5 /* SelectLevelViewController.swift in Sources */,
 				B47D0C5724FA1B140021AAE5 /* LevelSelectCollectionViewCell.swift in Sources */,
 				B48AA19F24E524C9005DCA06 /* GameViewController.swift in Sources */,
 				B48AA19B24E524C9005DCA06 /* AppDelegate.swift in Sources */,
 				B48AA1AF24E5341D005DCA06 /* MazeModel.swift in Sources */,
 				B4B0C7CA24E802C80057890B /* VectorOperations.swift in Sources */,
+				B4C8243024FE40F300D77D79 /* GameData.swift in Sources */,
 				B4B0C7C824E802C00057890B /* MotionHelper.swift in Sources */,
 				B42780DA24ED5FBB00482393 /* LoadingView.swift in Sources */,
 			);
