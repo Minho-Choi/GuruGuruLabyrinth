@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 
-class BallSelectViewController: UIViewController, SCNSceneRendererDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, SCNSceneRendererDelegate {
     
     
     @IBOutlet weak var settingSCNView: SCNView!
@@ -32,8 +32,9 @@ class BallSelectViewController: UIViewController, SCNSceneRendererDelegate, UIPi
     let ballArray: [Ball] = DataSet().ballArray
     //let mapArray: [Map] = DataSet().mapArray
     var pickScene: SCNScene!
-    var ball: SCNNode!
-    
+    lazy var ball = pickScene.rootNode.childNode(withName: "sphere", recursively: true)!
+    var rotationAngle = CGFloat()
+    var action = SCNAction()
     // MARK: - View Controller Lifecycle
     
     override func viewDidLoad() {
@@ -46,11 +47,14 @@ class BallSelectViewController: UIViewController, SCNSceneRendererDelegate, UIPi
     
     func sceneSetup() {
         pickScene = SCNScene(named: "art.scnassets/Ball.scn")!
+        pickScene.isPaused = false
+        settingSCNView.delegate = self
         settingSCNView.scene = pickScene
+        settingSCNView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        settingSCNView.layer.borderWidth = 3.0
     }
     
     func nodeSetup(dataRow: Int) {
-        ball = pickScene.rootNode.childNode(withName: "sphere", recursively: true)
         
         let ballData = ballArray[dataRow]
         
@@ -84,11 +88,12 @@ class BallSelectViewController: UIViewController, SCNSceneRendererDelegate, UIPi
         }
         
         // ball physics setting
-        ball.physicsBody = .dynamic()
-        ball.physicsBody?.mass = ballData.mass
-        ball.physicsBody?.friction = ballData.friction
-        ball.physicsBody?.damping = ballData.damping
-        ball.physicsBody?.angularDamping = ballData.angularDamping
+        
+//        ball.physicsBody = .dynamic()
+//        ball.physicsBody?.mass = ballData.mass
+//        ball.physicsBody?.friction = ballData.friction
+//        ball.physicsBody?.damping = ballData.damping
+//        ball.physicsBody?.angularDamping = ballData.angularDamping
         
         
     }
@@ -112,13 +117,16 @@ class BallSelectViewController: UIViewController, SCNSceneRendererDelegate, UIPi
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        ball.removeAllActions()
         nodeSetup(dataRow: row)
+        action = SCNAction.rotate(by: CGFloat.pi, around: SCNVector3(1, 1, 1), duration: 5)
+        ball.runAction(action)
     }
     
     
     // MARK: - SCNScene Renderer
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
-    }
+//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+//
+//    }
 
 }
