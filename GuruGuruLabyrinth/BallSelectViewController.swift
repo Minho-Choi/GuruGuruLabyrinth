@@ -14,12 +14,12 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     @IBOutlet weak var settingSCNView: SCNView!
     
-    @IBOutlet weak var ballPicker: UIPickerView! {
+    @IBOutlet weak var picker: UIPickerView! {
         didSet {
-            ballPicker.delegate = self
-            ballPicker.dataSource = self
-            ballPicker.backgroundColor = .black
-            ballPicker.setValue(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), forKey: "textColor")
+            picker.delegate = self
+            picker.dataSource = self
+            picker.backgroundColor = .black
+            picker.setValue(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), forKey: "textColor")
         }
     }
     
@@ -30,9 +30,10 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     }
     
     let ballArray: [Ball] = DataSet().ballArray
-    //let mapArray: [Map] = DataSet().mapArray
+    let wallArray: [WallTexture] = DataSet().wallArray
     var pickScene: SCNScene!
     lazy var ball = pickScene.rootNode.childNode(withName: "sphere", recursively: true)!
+    lazy var wall = pickScene.rootNode.childNode(withName: "plane", recursively: true)!
     var rotationAngle = CGFloat()
     var action = SCNAction()
     // MARK: - View Controller Lifecycle
@@ -57,35 +58,51 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     func nodeSetup(dataRow: Int) {
         
         let ballData = ballArray[dataRow]
+        let wallData = wallArray[dataRow]
         
         // ball material setting
-        if let diffuse = ballData.diffuse {
+        if let diffuse = ballData.diffuse,
+           let metallic = ballData.metallic,
+           let normal = ballData.normal,
+           let roughness = ballData.roughness,
+           let occlusion = ballData.occlusion,
+           let displacement = ballData.displacement,
+           let emissive = ballData.emissive,
+           let mask = ballData.mask,
+           let alpha = ballData.alpha {
+            
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: diffuse)
-        }
-        if let metallic = ballData.metallic {
             ball.geometry?.firstMaterial?.metalness.contents = UIImage(named: metallic)
-        }
-        if let normal = ballData.normal {
             ball.geometry?.firstMaterial?.normal.contents = UIImage(named: normal)
-        }
-        if let roughness = ballData.roughness {
             ball.geometry?.firstMaterial?.roughness.contents = UIImage(named: roughness)
-        }
-        if let occlusion = ballData.occlusion {
             ball.geometry?.firstMaterial?.ambientOcclusion.contents = UIImage(named: occlusion)
-        }
-        if let displacement = ballData.displacement {
             ball.geometry?.firstMaterial?.displacement.contents = UIImage(named: displacement)
-        }
-        if let emissive = ballData.emissive {
             ball.geometry?.firstMaterial?.emission.contents = UIImage(named: emissive)
-        }
-        if let mask = ballData.mask {
             ball.geometry?.firstMaterial?.multiply.contents = UIImage(named: mask)
-        }
-        if let alpha = ballData.alpha {
             ball.geometry?.firstMaterial?.transparent.contents = UIImage(named: alpha)
         }
+        
+        if let diffuse = wallData.diffuse,
+           let metallic = ballData.metallic,
+           let normal = ballData.normal,
+           let roughness = ballData.roughness,
+           let occlusion = ballData.occlusion,
+           let displacement = ballData.displacement,
+           let emissive = ballData.emissive,
+           let mask = ballData.mask,
+           let alpha = ballData.alpha {
+            
+            wall.geometry?.firstMaterial?.diffuse.contents = UIImage(named: diffuse)
+            wall.geometry?.firstMaterial?.metalness.contents = UIImage(named: metallic)
+            wall.geometry?.firstMaterial?.normal.contents = UIImage(named: normal)
+            wall.geometry?.firstMaterial?.roughness.contents = UIImage(named: roughness)
+            wall.geometry?.firstMaterial?.ambientOcclusion.contents = UIImage(named: occlusion)
+            wall.geometry?.firstMaterial?.displacement.contents = UIImage(named: displacement)
+            wall.geometry?.firstMaterial?.emission.contents = UIImage(named: emissive)
+            wall.geometry?.firstMaterial?.multiply.contents = UIImage(named: mask)
+            wall.geometry?.firstMaterial?.transparent.contents = UIImage(named: alpha)
+        }
+           
         
         // ball physics setting
         
@@ -101,32 +118,45 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     // MARK: - Picker Methods
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1//2
+        return 2
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        if component == 0 {
+        if component == 0 {
             return ballArray.count
-//        } else {
-//            return
-//        }
+        } else {
+            return wallArray.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return ballArray[row].name
+        if component == 0 {
+            return ballArray[row].name
+        } else {
+            return wallArray[row].name
+        }
     }
     
+    // rotating ball
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        ball.removeAllActions()
-        nodeSetup(dataRow: row)
-        action = SCNAction.rotate(by: CGFloat.pi, around: SCNVector3(1, 1, 1), duration: 5)
-        ball.runAction(action)
+        if component == 0 {
+            ball.removeAllActions()
+            nodeSetup(dataRow: row)
+            action = SCNAction.rotate(by: CGFloat.pi, around: SCNVector3(1, 1, 1), duration: 5)
+            ball.runAction(action)
+        } else {
+            
+        }
     }
     
     
-    // MARK: - SCNScene Renderer
-//    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-//
-//    }
+    // segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GameView" {
+            let gameViewControlelr = segue.destination as! GameViewController
+            gameViewControlelr.gameData = sender as? Level
+        }
+    }
 
 }

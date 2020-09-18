@@ -148,7 +148,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "D44BF5F1-BAA0-4C5B-8B86-9FF2610162D5 - bf9f8fee0aeb06d5"
+                  uuid = "D44BF5F1-BAA0-4C5B-8B86-9FF2610162D5 - 327891504fde8b9d"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -163,7 +163,7 @@
                   offsetFromSymbolStart = "153">
                </Location>
                <Location
-                  uuid = "D44BF5F1-BAA0-4C5B-8B86-9FF2610162D5 - f5dd7483db4e8fec"
+                  uuid = "D44BF5F1-BAA0-4C5B-8B86-9FF2610162D5 - 783a6a3d9e7b02a4"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -196,7 +196,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "0099DF9C-F5CF-45ED-BE71-00FAE93BAFE4 - 4957ba2684c769dd"
+                  uuid = "0099DF9C-F5CF-45ED-BE71-00FAE93BAFE4 - c4b0a498c1f2e474"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -211,7 +211,7 @@
                   offsetFromSymbolStart = "2243">
                </Location>
                <Location
-                  uuid = "0099DF9C-F5CF-45ED-BE71-00FAE93BAFE4 - bf9f8fee0aeb06d5"
+                  uuid = "0099DF9C-F5CF-45ED-BE71-00FAE93BAFE4 - 327891504fde8b9d"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -260,7 +260,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "94FA37C9-B725-4031-AF14-CCAF2967777B - 4957ba2684c769dd"
+                  uuid = "94FA37C9-B725-4031-AF14-CCAF2967777B - c4b0a498c1f2e4f8"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -275,7 +275,7 @@
                   offsetFromSymbolStart = "3002">
                </Location>
                <Location
-                  uuid = "94FA37C9-B725-4031-AF14-CCAF2967777B - 4957ba2684c769dd"
+                  uuid = "94FA37C9-B725-4031-AF14-CCAF2967777B - c4b0a498c1f2e4f8"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"

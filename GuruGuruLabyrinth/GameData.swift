@@ -126,4 +126,71 @@ class DataSet {
         )
     
     lazy var ballArray: [Ball] = [gold, cardboard, concrete, camouflage, wood, moss]
+    
+    let concreteWall = WallTexture(
+        name: "Concrete Wall",
+        diffuse: "art.scnassets/wall/TexturesCom_Concrete_WaffleSlab_512_albedo.tif",
+        metallic: nil,
+        normal: "art.scnassets/wall/TexturesCom_Concrete_WaffleSlab_512_normal.tif",
+        roughness: "art.scnassets/wall/TexturesCom_Concrete_WaffleSlab_512_roughness.tif",
+        occlusion: "art.scnassets/wall/TexturesCom_Concrete_WaffleSlab_512_ao.tif",
+        displacement: "art.scnassets/wall/TexturesCom_Concrete_WaffleSlab_512_height.tif",
+        emissive: nil,
+        mask: nil,
+        alpha: nil
+        )
+    
+    let brickWall = WallTexture(
+        name: "Brick Wall",
+        diffuse: "art.scnassets/wall/TexturesCom_Brick_Medieval_1K_albedo.tif",
+        metallic: nil,
+        normal: "art.scnassets/wall/TexturesCom_Brick_Medieval_1K_normal.tif",
+        roughness: "art.scnassets/wall/TexturesCom_Brick_Medieval_1K_roughness.tif",
+        occlusion: "art.scnassets/wall/TexturesCom_Brick_Medieval_1K_ao.tif",
+        displacement: "art.scnassets/wall/TexturesCom_Brick_Medieval_1K_height.tif",
+        emissive: nil,
+        mask: nil,
+        alpha: nil
+        )
+    
+    let metalWall = WallTexture(
+        name: "Brick Wall",
+        diffuse: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_albedo.tif",
+        metallic: nil,
+        normal: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_normal.tif",
+        roughness: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_roughness.tif",
+        occlusion: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_ao.tif",
+        displacement: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_height.tif",
+        emissive: nil,
+        mask: nil,
+        alpha: nil
+        )
+    
+    let paintWall = WallTexture(
+        name: "Brick Wall",
+        diffuse: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_albedo.tif",
+        metallic: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_metallic.tif",
+        normal: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_normal.tif",
+        roughness: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_roughness.tif",
+        occlusion: nil,
+        displacement: nil,
+        emissive: nil,
+        mask: nil,
+        alpha: nil
+        )
+    
+    let treeWall = WallTexture(
+        name: "Brick Wall",
+        diffuse: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_albedo.tif",
+        metallic: nil,
+        normal: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_normal.tif",
+        roughness: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_roughness.tif",
+        occlusion: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_ao.tif",
+        displacement: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_height.tif",
+        emissive: nil,
+        mask: nil,
+        alpha: nil
+        )
+        
+    lazy var wallArray: [WallTexture] = [concreteWall, brickWall, metalWall, paintWall, treeWall]
 }

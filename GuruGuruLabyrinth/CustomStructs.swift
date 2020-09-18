@@ -43,7 +43,18 @@ struct Ball {
     var angularDamping: CGFloat
 }
 
-
+struct WallTexture {
+    var name: String
+    var diffuse: String?
+    var metallic: String?
+    var normal: String?
+    var roughness: String?
+    var occlusion: String?
+    var displacement: String?
+    var emissive: String?
+    var mask: String?
+    var alpha: String?
+}
 
 // Cell 위치 구조체
 struct Coordinate: Equatable {
