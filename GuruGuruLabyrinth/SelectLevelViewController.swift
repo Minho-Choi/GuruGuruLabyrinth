@@ -46,13 +46,13 @@ class SelectLevelViewController: UIViewController, UICollectionViewDelegate, UIC
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "GameView", sender: levelArray[indexPath.item] )
+        performSegue(withIdentifier: "BallView", sender: levelArray[indexPath.item] )
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GameView" {
-            let gameViewController = segue.destination as! GameViewController
-            gameViewController.gameData = sender as? Level
+        if segue.identifier == "BallView" {
+            let ballViewController = segue.destination as! BallSelectViewController
+            ballViewController.levelData = sender as? Level
         }
     }
 }

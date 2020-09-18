@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jjy-U0-ifQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xk2-8I-mng">
     <device id="retina5_9" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,6 +42,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="e3L-7m-qwS"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -50,7 +53,6 @@
                             <constraint firstItem="LJb-x3-7kL" firstAttribute="centerY" secondItem="Dur-gB-ZPF" secondAttribute="centerY" constant="-40" id="mJy-Dm-Mw9"/>
                             <constraint firstItem="aRA-uy-yN8" firstAttribute="centerX" secondItem="Dur-gB-ZPF" secondAttribute="centerX" id="xcF-nz-GvP"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="e3L-7m-qwS"/>
                     </view>
                     <navigationItem key="navigationItem" id="9ds-si-OM1"/>
                     <connections>
@@ -69,7 +71,7 @@
                     <sceneKitView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </sceneKitView>
                     <navigationItem key="navigationItem" id="GOl-Nk-8in"/>
                 </viewController>
@@ -97,7 +99,7 @@
                                     <constraint firstAttribute="width" secondItem="NRs-ug-B8w" secondAttribute="height" multiplier="4:3" id="exx-ll-8eb"/>
                                 </constraints>
                             </sceneKitView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzv-Ih-KGn">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uzv-Ih-KGn">
                                 <rect key="frame" x="422.33333333333326" y="314" width="335.66666666666674" height="30"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Play">
@@ -108,10 +110,11 @@
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" placeholderIntrinsicWidth="166" placeholderIntrinsicHeight="199" translatesAutoresizingMaskIntoConstraints="NO" id="uBU-8p-EBp">
-                                <rect key="frame" x="422" y="76" width="336" height="228"/>
+                                <rect key="frame" x="422.33333333333326" y="76" width="335.66666666666674" height="228"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </pickerView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="J1z-Op-Yhv"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="uBU-8p-EBp" firstAttribute="leading" secondItem="NRs-ug-B8w" secondAttribute="trailing" constant="11" id="7Bf-h6-x9n"/>
@@ -128,12 +131,12 @@
                             <constraint firstItem="J1z-Op-Yhv" firstAttribute="trailing" secondItem="uzv-Ih-KGn" secondAttribute="trailing" constant="10" id="fIU-T8-oNB"/>
                             <constraint firstItem="uBU-8p-EBp" firstAttribute="top" secondItem="fPJ-ti-KTw" secondAttribute="bottom" constant="15" id="wB3-wJ-mHW"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="J1z-Op-Yhv"/>
                     </view>
                     <connections>
-                        <outlet property="ballPicker" destination="uBU-8p-EBp" id="jdL-zn-b39"/>
                         <outlet property="enterButton" destination="uzv-Ih-KGn" id="lbH-Cg-W79"/>
+                        <outlet property="picker" destination="uBU-8p-EBp" id="vAR-5H-xpY"/>
                         <outlet property="settingSCNView" destination="NRs-ug-B8w" id="OBu-nm-90l"/>
+                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="mm6-sm-QbQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qns-pO-0zj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -165,6 +168,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="u4Y-kG-wEG"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="HID-Qk-gLo" firstAttribute="centerY" secondItem="Jpw-Ap-suX" secondAttribute="centerY" constant="-10" id="5JD-V8-xIV"/>
@@ -172,7 +176,6 @@
                             <constraint firstItem="M4c-mj-8H7" firstAttribute="top" secondItem="HID-Qk-gLo" secondAttribute="bottom" constant="-50" id="TBU-AK-vfK"/>
                             <constraint firstItem="HID-Qk-gLo" firstAttribute="centerX" secondItem="Jpw-Ap-suX" secondAttribute="centerX" id="eVz-WX-nic"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="u4Y-kG-wEG"/>
                     </view>
                     <connections>
                         <segue destination="QNC-V5-MrV" kind="presentation" identifier="MainView" animates="NO" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="3A8-rf-yt9"/>
@@ -216,13 +219,13 @@
                                                     <rect key="frame" x="0.0" y="90" width="256" height="136"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Size" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSL-Vl-SDU">
-                                                            <rect key="frame" x="111.99999999999999" y="0.0" width="32.333333333333329" height="62"/>
+                                                            <rect key="frame" x="112" y="0.0" width="32" height="62"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vision" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3IX-G4-xDG">
-                                                            <rect key="frame" x="104.66666666666667" y="74" width="46.666666666666671" height="62"/>
+                                                            <rect key="frame" x="104.99999999999999" y="74" width="46.333333333333329" height="62"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -230,7 +233,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Difficulty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMD-Kq-FHf">
-                                                    <rect key="frame" x="94" y="0.0" width="68.333333333333314" height="60"/>
+                                                    <rect key="frame" x="94" y="0.0" width="68" height="60"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="EUA-ES-Liw"/>
                                                     </constraints>
@@ -260,6 +263,7 @@
                                 </cells>
                             </collectionView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="jxG-gs-lyW"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="jeM-6l-QBH" firstAttribute="top" secondItem="jxG-gs-lyW" secondAttribute="top" constant="20" id="3ah-xE-Ycc"/>
@@ -271,19 +275,21 @@
                             <constraint firstItem="jxG-gs-lyW" firstAttribute="trailing" secondItem="H1l-e2-AeH" secondAttribute="trailing" id="l7U-fM-GWs"/>
                             <constraint firstItem="H1l-e2-AeH" firstAttribute="centerX" secondItem="Zs5-hw-qIo" secondAttribute="centerX" id="yON-aS-fP0"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="jxG-gs-lyW"/>
                     </view>
                     <connections>
                         <outlet property="LevelSelection" destination="H1l-e2-AeH" id="YfJ-MM-bIV"/>
-                        <segue destination="BV1-FR-VrT" kind="presentation" identifier="GameView" animates="NO" modalPresentationStyle="fullScreen" id="rla-z2-8It"/>
+                        <segue destination="jjy-U0-ifQ" kind="presentation" identifier="BallView" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="wKx-4r-htH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M3Y-Z7-CW6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-839.40886699507394" y="1336.8"/>
+            <point key="canvasLocation" x="-839" y="1337"/>
         </scene>
     </scenes>
     <resources>
         <image name="logo" width="987" height="599"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

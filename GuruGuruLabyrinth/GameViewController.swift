@@ -18,6 +18,8 @@ class GameViewController: UIViewController {
                 self.mazeSize = gamedataz.mazeSize
                 self.skyType = gamedataz.skyType
                 self.fogDistance = gamedataz.fogDistance
+                self.ballData = DataSet().ballArray[gamedataz.ballType]
+                self.wallTexData = DataSet().wallArray[gamedataz.wallType]
             }
         }
     }
@@ -31,6 +33,8 @@ class GameViewController: UIViewController {
     internal var sceneView: SCNView!
     private var scene: SCNScene!
     
+    private var ballData: Ball?
+    private var wallTexData: WallTexture?
     
     private var ballNode: SCNNode!
     private var selfieStickNode: SCNNode!
@@ -139,7 +143,6 @@ class GameViewController: UIViewController {
         swipeRightRecognizer.direction = .right
         swipeUpRecognizer.direction = .up
         
-        
         tapTwiceRecognizer.addTarget(self, action: #selector(sceneViewTappedTwice(recognizer:)))
         swipeLeftRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
         swipeRightRecognizer.addTarget(self, action: #selector(sceneViewSwiped(recognizer:)))
@@ -168,7 +171,6 @@ class GameViewController: UIViewController {
         sceneView.overlaySKScene = spriteScene
         
     }
-    
     
     // MARK: - Gesture and Timer Control
     
@@ -237,10 +239,36 @@ class GameViewController: UIViewController {
     private func addBall() -> SCNNode {
         // Ball texture modification
         let ballGeometry = SCNSphere(radius: 0.25)
-        ballGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/BallDiffuse.tif")
-        ballGeometry.firstMaterial!.metalness.contents = UIImage(named: "art.scnassets/BallMetallic.tif")
-        ballGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/BallNormal.tif")
-        ballGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/BallRoughness.tif")
+        let ballTexture = ballGeometry.firstMaterial!
+        if let diffuse = ballData?.diffuse {
+            ballTexture.diffuse.contents = UIImage(named: diffuse)
+        } else { ballTexture.diffuse.contents = nil }
+        if let metallic = ballData?.metallic {
+            ballTexture.metalness.contents = UIImage(named: metallic)
+        } else { ballTexture.metalness.contents = nil}
+        if let normal = ballData?.normal {
+            ballTexture.normal.contents = UIImage(named: normal)
+        } else { ballTexture.normal.contents = nil }
+        if let roughness = ballData?.roughness {
+            ballTexture.roughness.contents = UIImage(named: roughness)
+        } else { ballTexture.roughness.contents = nil }
+        if let occlusion = ballData?.occlusion {
+            ballTexture.ambientOcclusion.contents = UIImage(named: occlusion)
+        } else { ballTexture.ambientOcclusion.contents = nil }
+        if let displacement = ballData?.displacement {
+            ballTexture.displacement.contents = UIImage(named: displacement)
+        } else { ballTexture.displacement.contents = nil }
+        if let emissive = ballData?.emissive {
+            ballTexture.emission.contents = UIImage(named: emissive)
+        } else { ballTexture.emission.contents = nil }
+        if let mask = ballData?.mask {
+            ballTexture.multiply.contents = UIImage(named: mask)
+        } else { ballTexture.multiply.contents = nil }
+        if let alpha = ballData?.alpha {
+            ballTexture.transparent.contents = UIImage(named: alpha)
+        } else { ballTexture.transparent.contents = nil }
+        
+        ballTexture.displacement.intensity = 0.01
         ballGeometry.segmentCount = 36
         var ballNode = SCNNode(geometry: ballGeometry)
         ballNode.position = SCNVector3(0, 1, 0)
@@ -254,15 +282,37 @@ class GameViewController: UIViewController {
         // wall texture modification
         let wallHeight: Float = 1.2
         let wallGeometry = SCNBox(width: 0.1, height: CGFloat(wallHeight), length: 1.1, chamferRadius: 0.01)
-        wallGeometry.firstMaterial!.diffuse.contents = UIImage(named: "art.scnassets/WallDiffuse.tif")
-        wallGeometry.firstMaterial!.diffuse.wrapS = .repeat
-        wallGeometry.firstMaterial!.diffuse.wrapT = .repeat
-        //wallGeometry.firstMaterial!.diffuse.contentsTransform = SCNMatrix4MakeScale(1, 1, 0)
-        wallGeometry.firstMaterial!.normal.contents = UIImage(named: "art.scnassets/WallNormal.tif")
-        wallGeometry.firstMaterial!.ambientOcclusion.contents = UIImage(named: "art.scnassets/WallOcclusion.tif")
-        wallGeometry.firstMaterial!.roughness.contents = UIImage(named: "art.scnassets/WallRoughness.tif")
-        wallGeometry.firstMaterial!.displacement.contents = UIImage(named: "art.scnassets/WallHeight.tif")
-        wallGeometry.firstMaterial!.displacement.intensity = 0.01
+        let wallTexture = wallGeometry.firstMaterial!
+        if let diffuse = wallTexData?.diffuse {
+            wallTexture.diffuse.contents = UIImage(named: diffuse)
+        } else { wallTexture.diffuse.contents = nil }
+        if let metallic = wallTexData?.metallic {
+            wallTexture.metalness.contents = UIImage(named: metallic)
+        } else { wallTexture.metalness.contents = nil }
+        if let normal = wallTexData?.normal {
+            wallTexture.normal.contents = UIImage(named: normal)
+        } else { wallTexture.normal.contents = nil }
+        if let roughness = wallTexData?.roughness {
+            wallTexture.roughness.contents = UIImage(named: roughness)
+        } else { wallTexture.roughness.contents = nil }
+        if let occlusion = wallTexData?.occlusion {
+            wallTexture.ambientOcclusion.contents = UIImage(named: occlusion)
+        } else { wallTexture.ambientOcclusion.contents = nil }
+        if let displacement = wallTexData?.displacement {
+            wallTexture.displacement.contents = UIImage(named: displacement)
+        } else { wallTexture.displacement.contents = nil }
+        if let emissive = wallTexData?.emissive {
+            wallTexture.emission.contents = UIImage(named: emissive)
+        } else { wallTexture.emission.contents = nil }
+        if let mask = wallTexData?.mask {
+            wallTexture.multiply.contents = UIImage(named: mask)
+        } else { wallTexture.multiply.contents = nil }
+        if let alpha = wallTexData?.alpha {
+            wallTexture.transparent.contents = UIImage(named: alpha)
+        } else { wallTexture.transparent.contents = nil }
+        wallTexture.diffuse.wrapS = .repeat
+        wallTexture.diffuse.wrapT = .repeat
+        wallTexture.displacement.intensity = 0.01
         
         var wallArray = [SCNNode]()
         // add wall nodes to array

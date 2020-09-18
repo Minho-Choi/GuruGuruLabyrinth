@@ -13,11 +13,11 @@ class DataSet {
     
     // level data
     
-    let level1 = Level(size: 4, levelName: "Easy", fogDistance: 0, skyBrightness: "art.scnassets/sky/Sky_Day_BlueSky_Equirect.png")
-    let level2 = Level(size: 8, levelName: "Normal", fogDistance: 10, skyBrightness: "art.scnassets/sky/Epic_BlueSunset_EquiRect_flat.png")
-    let level3 = Level(size: 12, levelName: "Hard", fogDistance: 8, skyBrightness: "art.scnassets/sky/AllSky_Overcast4_Low.png")
-    let level4 = Level(size: 16, levelName: "Extreme", fogDistance: 6, skyBrightness: "art.scnassets/sky/AllSky_Night_MoonBurst Equirect.png")
-    let level5 = Level(size: 20, levelName: "Impossible", fogDistance: 3, skyBrightness: "art.scnassets/sky/AllSky_Space_AnotherPlanet Equirect.png")
+    let level1 = Level(size: 4, levelName: "Easy", fogDistance: 0, skyBrightness: "art.scnassets/sky/Sky_Day_BlueSky_Equirect.png", ballIndex: 0, wallIndex: 0 )
+    let level2 = Level(size: 8, levelName: "Normal", fogDistance: 10, skyBrightness: "art.scnassets/sky/Epic_BlueSunset_EquiRect_flat.png", ballIndex: 0, wallIndex: 0)
+    let level3 = Level(size: 12, levelName: "Hard", fogDistance: 8, skyBrightness: "art.scnassets/sky/AllSky_Overcast4_Low.png", ballIndex: 0, wallIndex: 0)
+    let level4 = Level(size: 16, levelName: "Extreme", fogDistance: 6, skyBrightness: "art.scnassets/sky/AllSky_Night_MoonBurst Equirect.png", ballIndex: 0, wallIndex: 0)
+    let level5 = Level(size: 20, levelName: "Impossible", fogDistance: 3, skyBrightness: "art.scnassets/sky/AllSky_Space_AnotherPlanet Equirect.png", ballIndex: 0, wallIndex: 0)
 
     lazy var levelArray: [Level] = [level1, level2, level3, level4, level5]
     
@@ -154,7 +154,7 @@ class DataSet {
         )
     
     let metalWall = WallTexture(
-        name: "Brick Wall",
+        name: "Metal Wall",
         diffuse: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_albedo.tif",
         metallic: nil,
         normal: "art.scnassets/wall/TexturesCom_Metal_RustedSheet_1K_normal.tif",
@@ -167,7 +167,7 @@ class DataSet {
         )
     
     let paintWall = WallTexture(
-        name: "Brick Wall",
+        name: "Paint Wall",
         diffuse: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_albedo.tif",
         metallic: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_metallic.tif",
         normal: "art.scnassets/wall/TexturesCom_Paint_Scratched_1K_normal.tif",
@@ -180,7 +180,7 @@ class DataSet {
         )
     
     let treeWall = WallTexture(
-        name: "Brick Wall",
+        name: "Tree Bark Wall",
         diffuse: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_albedo.tif",
         metallic: nil,
         normal: "art.scnassets/wall/TexturesCom_Nature_TreeBark_1K_normal.tif",

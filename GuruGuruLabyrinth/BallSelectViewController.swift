@@ -27,6 +27,9 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     @IBAction func enterButtonDidPushed(_ sender: Any) {
         //perform segue
+        levelData?.ballType = ballRow
+        levelData?.wallType = wallRow
+        performSegue(withIdentifier: "GameView", sender: levelData)
     }
     
     let ballArray: [Ball] = DataSet().ballArray
@@ -36,6 +39,12 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
     lazy var wall = pickScene.rootNode.childNode(withName: "plane", recursively: true)!
     var rotationAngle = CGFloat()
     var action = SCNAction()
+    
+    var ballRow = 0;
+    var wallRow = 0;
+    
+    var levelData: Level?
+    
     // MARK: - View Controller Lifecycle
     
     override func viewDidLoad() {
@@ -55,53 +64,68 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
         settingSCNView.layer.borderWidth = 3.0
     }
     
-    func nodeSetup(dataRow: Int) {
+    func nodeSetup(ballDataRow: Int, wallDataRow: Int) {
         
-        let ballData = ballArray[dataRow]
-        let wallData = wallArray[dataRow]
-        
+        let ballData = ballArray[ballDataRow]
+        let wallData = wallArray[wallDataRow]
+        let ballTexture = ball.geometry?.firstMaterial
+        let wallTexture = wall.geometry?.firstMaterial
         // ball material setting
-        if let diffuse = ballData.diffuse,
-           let metallic = ballData.metallic,
-           let normal = ballData.normal,
-           let roughness = ballData.roughness,
-           let occlusion = ballData.occlusion,
-           let displacement = ballData.displacement,
-           let emissive = ballData.emissive,
-           let mask = ballData.mask,
-           let alpha = ballData.alpha {
-            
-            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: diffuse)
-            ball.geometry?.firstMaterial?.metalness.contents = UIImage(named: metallic)
-            ball.geometry?.firstMaterial?.normal.contents = UIImage(named: normal)
-            ball.geometry?.firstMaterial?.roughness.contents = UIImage(named: roughness)
-            ball.geometry?.firstMaterial?.ambientOcclusion.contents = UIImage(named: occlusion)
-            ball.geometry?.firstMaterial?.displacement.contents = UIImage(named: displacement)
-            ball.geometry?.firstMaterial?.emission.contents = UIImage(named: emissive)
-            ball.geometry?.firstMaterial?.multiply.contents = UIImage(named: mask)
-            ball.geometry?.firstMaterial?.transparent.contents = UIImage(named: alpha)
-        }
-        
-        if let diffuse = wallData.diffuse,
-           let metallic = ballData.metallic,
-           let normal = ballData.normal,
-           let roughness = ballData.roughness,
-           let occlusion = ballData.occlusion,
-           let displacement = ballData.displacement,
-           let emissive = ballData.emissive,
-           let mask = ballData.mask,
-           let alpha = ballData.alpha {
-            
-            wall.geometry?.firstMaterial?.diffuse.contents = UIImage(named: diffuse)
-            wall.geometry?.firstMaterial?.metalness.contents = UIImage(named: metallic)
-            wall.geometry?.firstMaterial?.normal.contents = UIImage(named: normal)
-            wall.geometry?.firstMaterial?.roughness.contents = UIImage(named: roughness)
-            wall.geometry?.firstMaterial?.ambientOcclusion.contents = UIImage(named: occlusion)
-            wall.geometry?.firstMaterial?.displacement.contents = UIImage(named: displacement)
-            wall.geometry?.firstMaterial?.emission.contents = UIImage(named: emissive)
-            wall.geometry?.firstMaterial?.multiply.contents = UIImage(named: mask)
-            wall.geometry?.firstMaterial?.transparent.contents = UIImage(named: alpha)
-        }
+        if let diffuse = ballData.diffuse {
+            ballTexture?.diffuse.contents = UIImage(named: diffuse)
+        } else { ballTexture?.diffuse.contents = nil }
+        if let metallic = ballData.metallic {
+            ballTexture?.metalness.contents = UIImage(named: metallic)
+        } else { ballTexture?.metalness.contents = nil}
+        if let normal = ballData.normal {
+            ballTexture?.normal.contents = UIImage(named: normal)
+        } else { ballTexture?.normal.contents = nil }
+        if let roughness = ballData.roughness {
+            ballTexture?.roughness.contents = UIImage(named: roughness)
+        } else { ballTexture?.roughness.contents = nil }
+        if let occlusion = ballData.occlusion {
+            ballTexture?.ambientOcclusion.contents = UIImage(named: occlusion)
+        } else { ballTexture?.ambientOcclusion.contents = nil }
+        if let displacement = ballData.displacement {
+            ballTexture?.displacement.contents = UIImage(named: displacement)
+        } else { ballTexture?.displacement.contents = nil }
+        if let emissive = ballData.emissive {
+            ballTexture?.emission.contents = UIImage(named: emissive)
+        } else { ballTexture?.emission.contents = nil }
+        if let mask = ballData.mask {
+            ballTexture?.multiply.contents = UIImage(named: mask)
+        } else { ballTexture?.multiply.contents = nil }
+        if let alpha = ballData.alpha {
+            ballTexture?.transparent.contents = UIImage(named: alpha)
+        } else { ballTexture?.transparent.contents = nil }
+
+        if let diffuse = wallData.diffuse {
+            wallTexture?.diffuse.contents = UIImage(named: diffuse)
+        } else { wallTexture?.diffuse.contents = nil }
+        if let metallic = wallData.metallic {
+            wallTexture?.metalness.contents = UIImage(named: metallic)
+        } else { wallTexture?.metalness.contents = nil }
+        if let normal = wallData.normal {
+            wallTexture?.normal.contents = UIImage(named: normal)
+        } else { wallTexture?.normal.contents = nil }
+        if let roughness = wallData.roughness {
+            wallTexture?.roughness.contents = UIImage(named: roughness)
+        } else { wallTexture?.roughness.contents = nil }
+        if let occlusion = wallData.occlusion {
+            wallTexture?.ambientOcclusion.contents = UIImage(named: occlusion)
+        } else { wallTexture?.ambientOcclusion.contents = nil }
+        if let displacement = wallData.displacement {
+            wallTexture?.displacement.contents = UIImage(named: displacement)
+        } else { wallTexture?.displacement.contents = nil }
+        if let emissive = wallData.emissive {
+            wallTexture?.emission.contents = UIImage(named: emissive)
+        } else { wallTexture?.emission.contents = nil }
+        if let mask = wallData.mask {
+            wallTexture?.multiply.contents = UIImage(named: mask)
+        } else { wallTexture?.multiply.contents = nil }
+        if let alpha = wallData.alpha {
+            wallTexture?.transparent.contents = UIImage(named: alpha)
+        } else { wallTexture?.transparent.contents = nil }
            
         
         // ball physics setting
@@ -137,15 +161,19 @@ class BallSelectViewController: UIViewController, UIPickerViewDelegate, UIPicker
         }
     }
     
-    // rotating ball
+    // selecting texture, rotating ball
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
+            ballRow = row
+            print(ballRow)
             ball.removeAllActions()
-            nodeSetup(dataRow: row)
+            nodeSetup(ballDataRow: ballRow, wallDataRow: wallRow)
             action = SCNAction.rotate(by: CGFloat.pi, around: SCNVector3(1, 1, 1), duration: 5)
             ball.runAction(action)
         } else {
-            
+            wallRow = row
+            print(wallRow)
+            nodeSetup(ballDataRow: ballRow, wallDataRow: wallRow)
         }
     }
     

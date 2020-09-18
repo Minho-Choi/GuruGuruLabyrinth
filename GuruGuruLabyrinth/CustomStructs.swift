@@ -17,11 +17,16 @@ struct Level {
     var fogDistance: CGFloat
     var skyType: String
     
-    init(size: Int, levelName: String, fogDistance: Int, skyBrightness: String) {
+    var ballType: Int
+    var wallType: Int
+    
+    init(size: Int, levelName: String, fogDistance: Int, skyBrightness: String, ballIndex: Int, wallIndex: Int) {
         self.mazeSize = size
         self.levelName = levelName
         self.fogDistance = CGFloat(fogDistance)
         self.skyType = skyBrightness
+        self.ballType = ballIndex
+        self.wallType = wallIndex
     }
 }
 
