@@ -418,7 +418,7 @@ class GameViewController: UIViewController {
     func goToMain() {
         spriteScene.removePopUp()
         sceneView = nil
-        self.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "UnwindGame", sender: self)
         print("dismissed")
     }
     

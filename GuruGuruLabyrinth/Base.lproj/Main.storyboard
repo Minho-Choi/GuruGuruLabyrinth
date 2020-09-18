@@ -74,8 +74,12 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </sceneKitView>
                     <navigationItem key="navigationItem" id="GOl-Nk-8in"/>
+                    <connections>
+                        <segue destination="Eiq-i4-IY6" kind="unwind" identifier="UnwindGame" unwindAction="unwindGameVCWithSegue:" id="tmg-o7-h7n"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+                <exit id="Eiq-i4-IY6" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1668" y="1337"/>
         </scene>
